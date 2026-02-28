@@ -40,7 +40,7 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
   | { id: number; name: string; type: "signal" }
   | { id: number; name: string; type: "coming" }
 > = [
-  { id: 1, name: "CH-01 • Meeeee", type: "video", src: "/assets/tv/ch09.web.mp4" },
+  { id: 1, name: "CH-01 • Meeeee", type: "video", src: "/assets/tv/ch18.mp4" },
   { id: 2, name: "CH-02 • Hooomieesss", type: "video", src: "/assets/tv/ch02.web.mp4" },
   { id: 3, name: "CH-03 • about", type: "video", src: "/assets/tv/ch03.web.mp4" },
 
