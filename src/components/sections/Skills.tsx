@@ -118,7 +118,7 @@ export default function Skills() {
 
   const dataML: Tech[] = [
     { label: "PyTorch", logoSrc: "/logos/pytorch.jpg" },
-    { label: "LightGBM",  logoSrc: "/logos/lightbgm.png"},
+    { label: "LightGBM",  logoSrc: "/logos/light.png"},
     { label: "OpenCV", logoSrc: "/logos/opencv.png" },
     { label: "ARIMA" },
     { label: "Selenium", logoSrc: "/logos/selenium.jpg" }
