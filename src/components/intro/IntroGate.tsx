@@ -40,21 +40,21 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
   | { id: number; name: string; type: "signal" }
   | { id: number; name: string; type: "coming" }
 > = [
-  { id: 1, name: "CH-01 • Showcase", type: "video", src: "/assets/tv/ch01.web.mp4" },
-  { id: 2, name: "CH-02 • Projects", type: "video", src: "/assets/tv/ch02.web.mp4" },
-  { id: 3, name: "CH-03 • About Me", type: "video", src: "/assets/tv/ch03.web.mp4" },
+  { id: 1, name: "CH-01 • Meeeee", type: "video", src: "/assets/tv/ch01.web.mp4" },
+  { id: 2, name: "CH-02 • Hooomieesss", type: "video", src: "/assets/tv/ch02.web.mp4" },
+  { id: 3, name: "CH-03 • about", type: "video", src: "/assets/tv/ch03.web.mp4" },
 
   { id: 4, name: "CH-04 • SIGNAL LOST", type: "signal" },
   { id: 5, name: "CH-05 • Coming Soon", type: "coming" },
 
-  { id: 6, name: "CH-06 • Skills", type: "video", src: "/assets/tv/ch06.web.mp4" },
-  { id: 7, name: "CH-07 • Fun", type: "video", src: "/assets/tv/ch07.web.mp4" },
+  { id: 6, name: "CH-06 • ਪੰਜਾਬ tv", type: "video", src: "/assets/tv/ch06.web.mp4" },
+  { id: 7, name: "CH-07 • Cringeposting", type: "video", src: "/assets/tv/ch07.web.mp4" },
 
   { id: 8, name: "CH-08 • SIGNAL LOST", type: "signal" },
 
-  { id: 9, name: "CH-09 • Coming Soon" ,type: "video", src: "/assets/tv/ch09.web.mp4" },
+  { id: 9, name: "CH-09 • Hehe" ,type: "video", src: "/assets/tv/ch09.web.mp4" },
 
-  { id: 10, name: "CH-10 • Extras", type: "video", src: "/assets/tv/ch10.web.mp4" },
+  { id: 10, name: "CH-10 • ....", type: "video", src: "/assets/tv/ch10.web.mp4" },
 
   { id: 11, name: "CH-11 • Coming Soon", type: "coming" },
 
@@ -305,7 +305,7 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
   </h1>
 
   <p className="p" style={{ maxWidth: 520 }}>
-    Enter the portfolio — explore projects and updates.
+    Enter the portfolio — explore projects ,skills.
   </p>
 
   <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 8 }}>
