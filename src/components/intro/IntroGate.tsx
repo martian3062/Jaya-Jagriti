@@ -47,7 +47,7 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
   { id: 4, name: "CH-04 • SIGNAL LOST", type: "signal" },
   { id: 5, name: "CH-05 • Coming Soon", type: "coming" },
 
-  { id: 6, name: "CH-06 • ਪੰਜਾਬ tv", type: "video", src: "/assets/tv/ch06.web.mp4" },
+  { id: 6, name: "CH-06 • ਪੰਜਾਬ", type: "video", src: "/assets/tv/ch06.web.mp4" },
   { id: 7, name: "CH-07 • Cringeposting", type: "video", src: "/assets/tv/ch01.web.mp4" },
 
   { id: 8, name: "CH-08 • SIGNAL LOST", type: "signal" },
