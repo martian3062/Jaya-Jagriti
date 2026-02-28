@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import SectionWrap from "./SectionWrap";
 
 type Tech = {
@@ -12,7 +12,7 @@ const initials = (label: string) => {
   return (parts[0][0] + parts[1][0]).toUpperCase();
 };
 
-/** ✅ Keep coins data OUTSIDE component so no hooks needed */
+/** ✅ Keep coins data OUTSIDE component */
 const COINS = [
   { x: 12, y: 22, s: 1.05, d: 0.0 },
   { x: 72, y: 18, s: 0.9, d: 0.15 },
@@ -27,16 +27,11 @@ const TechPill = ({ label, logoSrc }: Tech) => {
   return (
     <span className="techPill">
       <span className={`techIcon ${logoSrc ? "hasLogo" : "isFallback"}`}>
-        {logoSrc ? (
-          <img src={logoSrc} alt={`${label} logo`} loading="lazy" />
-        ) : (
-          <span className="techInitials">{fallback}</span>
-        )}
+        {logoSrc ? <img src={logoSrc} alt={`${label} logo`} loading="lazy" /> : <span className="techInitials">{fallback}</span>}
       </span>
 
       <span className="techLabel">{label}</span>
 
-      {/* hover sparkles */}
       <span className="pillSpark s1" />
       <span className="pillSpark s2" />
       <span className="pillSpark s3" />
@@ -44,12 +39,6 @@ const TechPill = ({ label, logoSrc }: Tech) => {
   );
 };
 
-/**
- * ✅ IMPORTANT:
- * - Never early-return
- * - Never call hooks conditionally
- * - Just "render" and control visibility via style/class
- */
 function CoinIntroOverlay({
   show,
   durationMs = 1200,
@@ -71,7 +60,8 @@ function CoinIntroOverlay({
       aria-hidden="true"
       style={{
         opacity: show ? 1 : 0,
-        pointerEvents: show ? "auto" : "none"
+        // ✅ DO NOT block scrolling/taps on mobile
+        pointerEvents: "none"
       }}
     >
       <div className="introInner">
@@ -149,7 +139,6 @@ export default function Skills() {
   const devops: Tech[] = [
     { label: "AWS", logoSrc: "/logos/aws.jpg" },
     { label: "Git", logoSrc: "/logos/git.png" },
-    // ✅ FIX THIS if it was wrong in your folder:
     { label: "n8n", logoSrc: "/logos/n8n.jpg" },
     { label: "LangGraph" },
     { label: "Eliza" },
@@ -167,11 +156,7 @@ export default function Skills() {
   const Wrap = ({ items }: { items: Tech[] }) => (
     <div className="techWrap" style={{ marginTop: 12 }}>
       {items.map((x, idx) => (
-        <span
-          key={x.label}
-          className="pillEnter"
-          style={{ animationDelay: `${0.08 * idx + 0.06}s` }}
-        >
+        <span key={x.label} className="pillEnter" style={{ animationDelay: `${0.08 * idx + 0.06}s` }}>
           <TechPill label={x.label} logoSrc={x.logoSrc} />
         </span>
       ))}
@@ -180,55 +165,80 @@ export default function Skills() {
 
   return (
     <SectionWrap id="skills" title="Skills">
-      <CoinIntroOverlay show={intro} onDone={() => setIntro(false)} />
+      <div className="skillsInner">
+        <CoinIntroOverlay show={intro} onDone={() => setIntro(false)} />
 
-      <div
-        className={`grid skillsGrid ${intro ? "isIntro" : "isReady"}`}
-        style={{ gridTemplateColumns: "1fr 1fr", marginTop: 12 }}
-      >
-        <div className="card frame" style={{ padding: 18, background: "rgba(255,255,255,.04)" }}>
-          <div className="badge">Languages</div>
-          <Wrap items={languages} />
+        <div className={`grid skillsGrid ${intro ? "isIntro" : "isReady"}`} style={{ gridTemplateColumns: "1fr 1fr", marginTop: 12 }}>
+          <div className="card frame skillsPanel">
+            <div className="badge">Languages</div>
+            <Wrap items={languages} />
 
-          <div className="badge" style={{ marginTop: 18 }}>
-            Programming
+            <div className="badge" style={{ marginTop: 18 }}>
+              Programming
+            </div>
+            <Wrap items={programming} />
           </div>
-          <Wrap items={programming} />
-        </div>
 
-        <div className="card frame" style={{ padding: 18, background: "rgba(255,255,255,.04)" }}>
-          <div className="badge">Frameworks</div>
-          <Wrap items={frameworks} />
+          <div className="card frame skillsPanel">
+            <div className="badge">Frameworks</div>
+            <Wrap items={frameworks} />
 
-          <div className="badge" style={{ marginTop: 18 }}>
-            Data & ML
+            <div className="badge" style={{ marginTop: 18 }}>
+              Data & ML
+            </div>
+            <Wrap items={dataML} />
           </div>
-          <Wrap items={dataML} />
-        </div>
 
-        <div className="card frame" style={{ padding: 18, background: "rgba(255,255,255,.04)" }}>
-          <div className="badge">Web3</div>
-          <Wrap items={web3} />
-        </div>
-
-        <div className="card frame" style={{ padding: 18, background: "rgba(255,255,255,.04)" }}>
-          <div className="badge">DevOps & Automation</div>
-          <Wrap items={devops} />
-
-          <div className="badge" style={{ marginTop: 18 }}>
-            Tools
+          <div className="card frame skillsPanel">
+            <div className="badge">Web3</div>
+            <Wrap items={web3} />
           </div>
-          <Wrap items={tools} />
+
+          <div className="card frame skillsPanel">
+            <div className="badge">DevOps & Automation</div>
+            <Wrap items={devops} />
+
+            <div className="badge" style={{ marginTop: 18 }}>
+              Tools
+            </div>
+            <Wrap items={tools} />
+          </div>
         </div>
       </div>
 
       <style>{`
         #skills{ position:relative; }
 
+        /* ✅ same mobile safety padding as other sections */
+        #skills .skillsInner{
+          width: min(1100px, calc(100vw - 48px));
+          margin: 0 auto;
+          padding: 92px 0 140px;
+          position: relative;
+          z-index: 5;
+        }
+
+        /* readability plate over bg video */
+        #skills .skillsInner::before{
+          content:"";
+          position:absolute;
+          inset: 72px 0 96px;
+          border-radius: 22px;
+          background: rgba(0,0,0,.26);
+          border: 1px solid rgba(231,211,162,.14);
+          backdrop-filter: blur(10px);
+          z-index: -1;
+        }
+
+        .skillsPanel{
+          padding: 18px;
+          background: rgba(255,255,255,.04);
+        }
+
         /* ========= Intro Overlay ========= */
         .skillsIntroOverlay{
           position:absolute;
-          inset:0;
+          inset: 72px 0 96px; /* match plate area */
           z-index:20;
           display:grid;
           place-items:center;
@@ -403,8 +413,7 @@ export default function Skills() {
           height:100%;
           width:50%;
           border-radius:999px;
-          background:
-            linear-gradient(90deg, rgba(201,168,106,.10), rgba(201,168,106,.50), rgba(160,130,255,.24));
+          background: linear-gradient(90deg, rgba(201,168,106,.10), rgba(201,168,106,.50), rgba(160,130,255,.24));
           animation: barRun 1.15s ease forwards;
           filter: blur(.2px);
         }
@@ -413,12 +422,8 @@ export default function Skills() {
           45%{ opacity:1; }
           100%{ transform: translateX(220%); opacity:.8; }
         }
-        .introHint{
-          font-size:12px;
-          opacity:.7;
-        }
+        .introHint{ font-size:12px; opacity:.7; }
 
-        /* Slight blur while intro shows */
         .skillsGrid.isIntro{
           filter: blur(2px);
           opacity: .92;
@@ -430,7 +435,6 @@ export default function Skills() {
           transition: .35s ease;
         }
 
-        /* ========= Pills Enter ========= */
         .pillEnter{
           display:inline-block;
           animation: pillIn .55s cubic-bezier(.2,.9,.2,1) both;
@@ -440,7 +444,6 @@ export default function Skills() {
           to{ opacity:1; transform: translateY(0) scale(1); filter: blur(0); }
         }
 
-        /* ---- Skills Pills ---- */
         .techWrap{
           display:flex;
           flex-wrap:wrap;
@@ -505,9 +508,7 @@ export default function Skills() {
         .pillSpark.s2{ right:18px; top:10px; }
         .pillSpark.s3{ right:22px; bottom:10px; }
 
-        .techPill:hover .pillSpark{
-          animation: sparkPop .55s ease forwards;
-        }
+        .techPill:hover .pillSpark{ animation: sparkPop .55s ease forwards; }
         .techPill:hover .pillSpark.s2{ animation-delay:.06s; }
         .techPill:hover .pillSpark.s3{ animation-delay:.12s; }
 
@@ -534,9 +535,7 @@ export default function Skills() {
           object-fit:contain;
           filter: drop-shadow(0 6px 10px rgba(0,0,0,.35));
         }
-        .techIcon.isFallback{
-          position:relative;
-        }
+        .techIcon.isFallback{ position:relative; }
         .techIcon.isFallback::before{
           content:"";
           position:absolute;
@@ -561,6 +560,26 @@ export default function Skills() {
         @media (max-width: 900px) {
           #skills .grid { grid-template-columns: 1fr !important; }
           .introInner{ grid-template-columns: 1fr; }
+        }
+
+        /* ✅ Mobile: tighter pills + more readable */
+        @media (max-width: 640px){
+          #skills .skillsInner{
+            width: calc(100vw - 24px);
+            padding: 84px 0 160px;
+          }
+          #skills .skillsInner::before{
+            inset: 62px 0 106px;
+            border-radius: 18px;
+          }
+          .skillsIntroOverlay{
+            inset: 62px 0 106px;
+            border-radius: 18px;
+          }
+          .techWrap{ gap: 8px; }
+          .techPill{ padding: 7px 10px; }
+          .techIcon{ width: 24px; height: 24px; border-radius: 9px; }
+          .techIcon.hasLogo img{ width: 16px; height: 16px; }
         }
 
         @media (prefers-reduced-motion: reduce){
