@@ -21,13 +21,8 @@ export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  /** True only on the homepage route */
   const isHome = location.pathname === "/";
 
-  /**
-   * Read once from sessionStorage on first render.
-   * If gate_open === "true" we skip IntroGate.
-   */
   const initialGateOpen = useMemo(() => {
     if (typeof window === "undefined") return false;
     return sessionStorage.getItem("gate_open") === "true";
@@ -35,16 +30,11 @@ export default function App() {
 
   const [gateOpen, setGateOpen] = useState(initialGateOpen);
 
-  /** Open the gate and persist state for this browser session */
   const openGate = () => {
     sessionStorage.setItem("gate_open", "true");
     setGateOpen(true);
   };
 
-  /**
-   * Reset gate and scroll to top.
-   * Useful if you want a "re-enter" experience.
-   */
   const resetGate = () => {
     sessionStorage.removeItem("gate_open");
     sessionStorage.removeItem("pending_scroll_to");
@@ -55,20 +45,12 @@ export default function App() {
     });
   };
 
-  /**
-   * Allow other components to reset the gate via:
-   * window.dispatchEvent(new Event("reset_gate"))
-   */
   useEffect(() => {
     const onReset = () => resetGate();
     window.addEventListener("reset_gate", onReset);
     return () => window.removeEventListener("reset_gate", onReset);
   }, []);
 
-  /**
-   * If something sets sessionStorage.pending_scroll_to = "<sectionId>"
-   * before navigating home, we scroll once the gate is open.
-   */
   useEffect(() => {
     if (!isHome || !gateOpen) return;
 
@@ -85,7 +67,6 @@ export default function App() {
         sessionStorage.removeItem("pending_scroll_to");
         return;
       }
-
       tries += 1;
       if (tries < maxTries) requestAnimationFrame(tick);
       else sessionStorage.removeItem("pending_scroll_to");
@@ -94,53 +75,87 @@ export default function App() {
     requestAnimationFrame(tick);
   }, [isHome, gateOpen]);
 
-  /** IntroGate callback */
   const onEnter = () => openGate();
 
-  /** Helper: open gate then go home */
-  const openAndGoHome = () => {
-    openGate();
-    navigate("/");
-  };
-  // NOTE: openAndGoHome is currently unused. Remove it if you don't need it.
-
-  /** Background video changes based on gate state */
   const bgSrc = isHome && !gateOpen ? "/jayuu.mp4" : "/pikachu-bg.mp4";
+
+  const showGate = isHome && !gateOpen;
+  const showDock = isHome && gateOpen;
 
   return (
     <LenisProvider>
-      <BackgroundVideo src={bgSrc} />
+      <div className="appRoot">
+        {/* ✅ Background layer (always behind) */}
+        <div className="bgLayer" aria-hidden>
+          <BackgroundVideo src={bgSrc} />
+        </div>
 
-      {/* Gate closed on home => show intro only */}
-      {isHome && !gateOpen ? (
-        <IntroGate onEnter={onEnter} />
-      ) : (
-        <>
-          <ScrollProgress />
+        {/* ✅ Foreground app (always above) */}
+        <div className={`appLayer ${showDock ? "dock-safe" : ""}`}>
+          {showGate ? (
+            <IntroGate onEnter={onEnter} />
+          ) : (
+            <>
+              <ScrollProgress />
+              <Navbar />
 
-          {/* Home gets dock-safe spacing; other pages normal */}
-          <div className={isHome ? "dock-safe" : undefined}>
-            <Navbar />
+              <PageTransition locationKey={location.pathname}>
+                <Routes location={location}>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/projects" element={<Projects />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+              </PageTransition>
 
-            <PageTransition locationKey={location.pathname}>
-              <Routes location={location}>
-                <Route path="/" element={<Home />} />
-                <Route path="/projects" element={<Projects />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
+              <Footer />
+              {showDock ? <MiniSectionDock /> : null}
+            </>
+          )}
+        </div>
+      </div>
 
-                {/* default */}
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
-            </PageTransition>
+      {/* ✅ App-level stacking CSS (critical) */}
+      <style>{`
+        .appRoot{
+          position: relative;
+          min-height: 100vh;
+          overflow-x: hidden;
+          isolation: isolate; /* ✅ prevents z-index bugs with fixed video */
+        }
 
-            <Footer />
-          </div>
+        .bgLayer{
+          position: fixed;
+          inset: 0;
+          z-index: 0;
+          pointer-events: none; /* ✅ video never blocks clicks */
+        }
 
-          {/* Mini dock only on home when gate is open */}
-          {isHome && gateOpen ? <MiniSectionDock /> : null}
-        </>
-      )}
+        .appLayer{
+          position: relative;
+          z-index: 5; /* ✅ content always above background */
+          min-height: 100vh;
+        }
+
+        /* ✅ reserve space for MiniSectionDock on home */
+        .dock-safe{
+          padding-bottom: 110px;
+        }
+
+        @media (max-width: 640px){
+          .dock-safe{
+            padding-bottom: 140px;
+          }
+        }
+
+        /* landscape small height safety */
+        @media (orientation: landscape) and (max-height: 520px){
+          .dock-safe{
+            padding-bottom: 120px;
+          }
+        }
+      `}</style>
     </LenisProvider>
   );
 }
