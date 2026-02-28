@@ -1,6 +1,4 @@
-import React from "react";
-
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 export default function BackgroundVideo({ src }: { src: string }) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -20,7 +18,7 @@ export default function BackgroundVideo({ src }: { src: string }) {
     v.muted = true;
     v.playsInline = true;
     v.loop = true;
-    v.preload = "auto";
+    v.preload = "metadata"; // ✅ faster than "auto" for bg
 
     const tryPlay = async () => {
       const el = videoRef.current;
@@ -40,12 +38,8 @@ export default function BackgroundVideo({ src }: { src: string }) {
       }
     };
 
-    // first real frame -> fade in
     const onFirstFrame = () => setReady(true);
-
-    const onLoadedMeta = () => {
-      tryPlay();
-    };
+    const onLoadedMeta = () => tryPlay();
 
     const onGesture = () => {
       tryPlay();
@@ -57,16 +51,19 @@ export default function BackgroundVideo({ src }: { src: string }) {
     v.addEventListener("loadedmetadata", onLoadedMeta);
     v.addEventListener("loadeddata", onFirstFrame);
 
+    // ✅ backup: some browsers fire canplay earlier than loadeddata
+    v.addEventListener("canplay", onFirstFrame);
+
     window.addEventListener("pointerdown", onGesture, { passive: true });
     window.addEventListener("touchstart", onGesture, { passive: true });
     window.addEventListener("keydown", onGesture);
 
-    // initial attempt
     tryPlay();
 
     return () => {
       v.removeEventListener("loadedmetadata", onLoadedMeta);
       v.removeEventListener("loadeddata", onFirstFrame);
+      v.removeEventListener("canplay", onFirstFrame);
 
       window.removeEventListener("pointerdown", onGesture);
       window.removeEventListener("touchstart", onGesture);
@@ -75,15 +72,7 @@ export default function BackgroundVideo({ src }: { src: string }) {
   }, [src]);
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: -2,
-        overflow: "hidden",
-        background: "#000"
-      }}
-    >
+    <div className="bgVideoLayer" aria-hidden="true">
       <video
         ref={videoRef}
         src={src}
@@ -91,7 +80,7 @@ export default function BackgroundVideo({ src }: { src: string }) {
         playsInline
         autoPlay
         loop
-        preload="auto"
+        preload="metadata"
         controls={false}
         disablePictureInPicture
         disableRemotePlayback
@@ -105,14 +94,29 @@ export default function BackgroundVideo({ src }: { src: string }) {
           transition: "opacity 220ms ease"
         }}
       />
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background:
-            "linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.38) 45%, rgba(0,0,0,.55) 100%)"
-        }}
-      />
+
+      {/* overlay for readability */}
+      <div className="bgVideoOverlay" />
+      <style>{`
+        .bgVideoLayer{
+          position: fixed;
+          inset: 0;
+          z-index: 0;              /* ✅ NOT negative */
+          pointer-events: none;     /* ✅ never blocks UI */
+          overflow: hidden;
+          background: #000;
+        }
+        .bgVideoOverlay{
+          position:absolute;
+          inset:0;
+          background: linear-gradient(
+            180deg,
+            rgba(0,0,0,.55) 0%,
+            rgba(0,0,0,.38) 45%,
+            rgba(0,0,0,.55) 100%
+          );
+        }
+      `}</style>
     </div>
   );
 }
