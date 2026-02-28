@@ -2,19 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import SectionWrap from "./SectionWrap";
 
 const Tag = ({ children }: { children: React.ReactNode }) => (
-  <span
-    className="projTag"
-    style={{
-      border: "1px solid rgba(231,211,162,.18)",
-      background: "rgba(0,0,0,.26)",
-      padding: "6px 10px",
-      borderRadius: 999,
-      fontSize: 12,
-      opacity: 0.95
-    }}
-  >
-    {children}
-  </span>
+  <span className="projTag">{children}</span>
 );
 
 const withBase = (p: string) => `${import.meta.env.BASE_URL}${p.replace(/^\//, "")}`;
@@ -72,17 +60,28 @@ function LazyCardVideo({
   return (
     <div ref={ref} className="projBgWrap" aria-hidden>
       {!mountVideo && (
-        <div
-          className="projPoster"
-          style={{
-            backgroundImage: poster ? `url(${poster})` : undefined
-          }}
-        />
+        <div className="projPoster" style={poster ? { backgroundImage: `url(${poster})` } : undefined} />
       )}
 
       {mountVideo && (
+<<<<<<< HEAD
         <video className="project-bg" autoPlay muted loop playsInline preload="metadata">
           <source src={finalSrc} type="video/mp4" />
+=======
+        <video
+          className="project-bg"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="none"
+          poster={poster}
+          disablePictureInPicture
+          controls={false}
+          controlsList="nodownload noplaybackrate noremoteplayback"
+        >
+          <source src={src} type="video/mp4" />
+>>>>>>> 9cf291b (Fix mobile layout + project banner video + navbar/footer)
         </video>
       )}
 
@@ -90,6 +89,11 @@ function LazyCardVideo({
     </div>
   );
 }
+
+const safeHref = (link: string) => {
+  if (/^https?:\/\//i.test(link)) return link;
+  return `https://${link}`;
+};
 
 const ProjectCard = ({
   title,
@@ -111,6 +115,9 @@ const ProjectCard = ({
   return (
     <a
       className="card frame project-card"
+      href={safeHref(link)}
+      target="_blank"
+      rel="noreferrer"
       style={{
         padding: 18,
         cursor: "pointer",
@@ -118,23 +125,35 @@ const ProjectCard = ({
         position: "relative",
         overflow: "hidden",
         background: "rgba(255,255,255,.04)",
-        textDecoration: "none"
+        textDecoration: "none",
+        minWidth: 0
       }}
+<<<<<<< HEAD
       href={normalizeLink(link)}
       target="_blank"
       rel="noreferrer"
+=======
+>>>>>>> 9cf291b (Fix mobile layout + project banner video + navbar/footer)
     >
-      {/* VIDEO BG (lazy) */}
-      {bgVideoSrc && <LazyCardVideo src={bgVideoSrc} dim={0.38} poster={poster} />}
+      {/* ✅ Desktop: full-card BG video | ✅ Mobile: banner video */}
+      {bgVideoSrc && (
+        <div className="projMedia">
+          <LazyCardVideo src={bgVideoSrc} dim={0.38} poster={poster} />
+        </div>
+      )}
 
+<<<<<<< HEAD
       {/* CONTENT */}
       <div className="projContent">
         <div className="projTop">
           <div>
+=======
+      <div className="projContent">
+        <div className="projTop">
+          <div className="projHead">
+>>>>>>> 9cf291b (Fix mobile layout + project banner video + navbar/footer)
             <div className="projTitle">{title}</div>
-            <p className="p projSub" style={{ marginTop: 6 }}>
-              {subtitle}
-            </p>
+            <p className="p projSub">{subtitle}</p>
           </div>
 
           <div className="badge projBadge">{link}</div>
@@ -172,6 +191,16 @@ const ProjectCard = ({
           transform: translateY(-2px);
         }
 
+        /* ✅ Media wrapper:
+           - Desktop: absolute full background
+           - Mobile: relative banner (short height) */
+        #projects .projMedia{
+          position:absolute;
+          inset:0;
+          z-index:0;
+          pointer-events:none;
+        }
+
         /* -------- BG LAYERS -------- */
         #projects .projBgWrap{
           position:absolute;
@@ -187,6 +216,7 @@ const ProjectCard = ({
           width:100%;
           height:100%;
           object-fit:cover;
+          object-position:center;
           transform: scale(1.03);
           filter: saturate(1.1) contrast(1.05);
           opacity: .92;
@@ -202,10 +232,10 @@ const ProjectCard = ({
             rgba(0,0,0,.30);
           background-size: cover;
           background-position:center;
+          background-repeat:no-repeat;
           filter: saturate(1.05) contrast(1.02);
         }
 
-        /* global dim across card */
         #projects .projDim{
           position:absolute;
           inset:0;
@@ -219,6 +249,7 @@ const ProjectCard = ({
         #projects .projContent{
           position: relative;
           z-index: 2;
+<<<<<<< HEAD
           background: rgba(0,0,0,.46);
           border: 1px solid rgba(255,255,255,.08);
           border-radius: 16px;
@@ -236,15 +267,46 @@ const ProjectCard = ({
           align-items: flex-start;
         }
 
+=======
+          background: rgba(0,0,0,.50);
+          border: 1px solid rgba(255,255,255,.09);
+          border-radius: 16px;
+          padding: 14px;
+          margin: 2px;
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          min-width: 0;
+        }
+
+        #projects .projTop{
+          display:flex;
+          justify-content: space-between;
+          gap: 12px;
+          align-items:flex-start;
+          flex-wrap: wrap;
+          min-width: 0;
+        }
+
+        #projects .projHead{
+          min-width: 0;
+          flex: 1 1 260px;
+        }
+
+>>>>>>> 9cf291b (Fix mobile layout + project banner video + navbar/footer)
         #projects .projTitle{
           font-weight: 900;
           font-size: 18px;
+          line-height: 1.25;
           color: rgba(255,255,255,.92);
           text-shadow: 0 2px 14px rgba(0,0,0,.65);
+          word-break: break-word;
         }
+
         #projects .projSub{
+          margin-top: 6px;
           color: rgba(255,255,255,.78);
           text-shadow: 0 2px 14px rgba(0,0,0,.55);
+<<<<<<< HEAD
         }
 
         #projects .projBullets{
@@ -253,21 +315,52 @@ const ProjectCard = ({
           line-height: 1.65;
           color: rgba(255,255,255,.76);
           text-shadow: 0 2px 14px rgba(0,0,0,.45);
+=======
+          word-break: break-word;
+>>>>>>> 9cf291b (Fix mobile layout + project banner video + navbar/footer)
         }
 
         #projects .projBadge{
-          background: rgba(0,0,0,.40);
+          background: rgba(0,0,0,.45);
           border: 1px solid rgba(255,255,255,.10);
           color: rgba(255,255,255,.82);
           text-shadow: 0 2px 14px rgba(0,0,0,.55);
+<<<<<<< HEAD
           white-space: nowrap;
+=======
+          max-width: 100%;
+          overflow-wrap: anywhere;
+        }
+
+        #projects .projBullets{
+          margin: 12px 0 0;
+          padding-left: 18px;
+          line-height: 1.6;
+          color: rgba(255,255,255,.75);
+          text-shadow: 0 2px 14px rgba(0,0,0,.45);
+          overflow-wrap: anywhere;
+        }
+
+        #projects .projTagsRow{
+          display:flex;
+          gap: 10px;
+          flex-wrap: wrap;
+          margin-top: 14px;
+>>>>>>> 9cf291b (Fix mobile layout + project banner video + navbar/footer)
         }
 
         #projects .projTag{
-          color: rgba(255,255,255,.82);
+          border: 1px solid rgba(231,211,162,.18);
+          background: rgba(0,0,0,.30);
+          padding: 6px 10px;
+          border-radius: 999px;
+          font-size: 12px;
+          opacity: .95;
+          color: rgba(255,255,255,.84);
           text-shadow: 0 2px 14px rgba(0,0,0,.55);
         }
 
+<<<<<<< HEAD
         #projects .projTagsRow{
           display:flex;
           gap: 10px;
@@ -276,6 +369,9 @@ const ProjectCard = ({
         }
 
         /* hover effect */
+=======
+        /* hover */
+>>>>>>> 9cf291b (Fix mobile layout + project banner video + navbar/footer)
         #projects .project-card:hover .project-bg{
           transform: scale(1.08);
         }
@@ -283,7 +379,7 @@ const ProjectCard = ({
           opacity: .26 !important;
         }
         #projects .project-card:hover .projContent{
-          background: rgba(0,0,0,.40);
+          background: rgba(0,0,0,.44);
           border-color: rgba(255,255,255,.12);
         }
 
@@ -322,6 +418,65 @@ const ProjectCard = ({
           #projects .project-bg{ transition:none !important; }
           #projects .project-card{ transition:none !important; }
         }
+
+        /* responsive grid */
+        #projects .projectsGrid{
+          display:grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 16px;
+          margin-top: 12px;
+        }
+        @media (max-width: 980px){
+          #projects .projectsGrid{ grid-template-columns: 1fr; }
+        }
+
+        /* ✅ MOBILE: banner video (width > height) */
+        @media (max-width: 520px){
+          #projects .project-card{ padding: 14px !important; }
+
+          /* banner block */
+          #projects .projMedia{
+            position: relative;
+            height: 140px;         /* ✅ short height => wide banner */
+            border-radius: 14px;
+            overflow: hidden;
+            margin: 0 0 12px 0;
+          }
+
+          /* ensure bg wrap fills banner */
+          #projects .projMedia .projBgWrap{
+            position:absolute;
+            inset:0;
+          }
+
+          /* crop nicely inside banner */
+          #projects .project-bg{
+            transform: scale(1.14) !important;
+            object-position: center 40% !important;
+            opacity: .85;
+          }
+
+          /* dim inside banner */
+          #projects .projDim{
+            opacity: .60 !important;
+            background: linear-gradient(
+              180deg,
+              rgba(0,0,0,.72) 0%,
+              rgba(0,0,0,.48) 55%,
+              rgba(0,0,0,.88) 100%
+            ) !important;
+          }
+
+          /* content becomes normal card body */
+          #projects .projContent{
+            margin: 0;
+            padding: 12px;
+            border-radius: 14px;
+            background: rgba(0,0,0,.52);
+          }
+
+          #projects .projTitle{ font-size: 17px; }
+        }
       `}</style>
     </a>
   );
@@ -330,6 +485,7 @@ const ProjectCard = ({
 export default function Projects() {
   return (
     <SectionWrap id="projects" title="Projects">
+<<<<<<< HEAD
       <div className="projectsInner">
         <div className="grid projectsGrid">
           <ProjectCard
@@ -344,6 +500,21 @@ export default function Projects() {
             ]}
             tags={["React", "Django/DRF", "WebRTC", "WebSockets", "Groq"]}
           />
+=======
+      <div className="projectsGrid">
+        <ProjectCard
+          title="MedGenie 3.0"
+          subtitle="Full-stack One Health platform + telemedicine flows"
+          link="medico-cyborg-db.vercel.app"
+          bgVideoSrc={withBase("videos/medico.mp4")}
+          poster={withBase("posters/medico.jpg")}
+          bullets={[
+            "React 18 + Vite + Tailwind, Django REST, JWT auth; climate-aware outbreak forecasting and medical record uploads.",
+            "Node.js WebSocket signaling + Django APIs for WebRTC video consults, Robot36 SSTV/voice workflows, and live dashboards."
+          ]}
+          tags={["React", "Django/DRF", "WebRTC", "WebSockets", "Groq"]}
+        />
+>>>>>>> 9cf291b (Fix mobile layout + project banner video + navbar/footer)
 
           <ProjectCard
             title="ML DeFi Agent"
@@ -359,6 +530,7 @@ export default function Projects() {
           />
         </div>
       </div>
+<<<<<<< HEAD
 
       <style>{`
         /* ✅ section padding so it doesn't hide under navbar / bottom dock */
@@ -389,6 +561,8 @@ export default function Projects() {
           }
         }
       `}</style>
+=======
+>>>>>>> 9cf291b (Fix mobile layout + project banner video + navbar/footer)
     </SectionWrap>
   );
 }

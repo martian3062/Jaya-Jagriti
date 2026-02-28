@@ -397,3 +397,145 @@ button:focus-visible{
     padding-top: 14px;
   }
 }
+/* =========================
+   Mobile + Overflow + Perf Patch
+   Paste at END of file
+   ========================= */
+
+/* 1) Safer global overflow (some transforms cause sideways scroll) */
+html, body {
+  overflow-x: hidden;
+}
+
+/* clip is better than hidden if supported */
+@supports (overflow: clip) {
+  html, body { overflow-x: clip; }
+}
+
+/* 2) Better default section spacing on small screens */
+.section {
+  padding: 72px 0;
+}
+@media (max-width: 900px) {
+  .section { padding: 56px 0; }
+}
+@media (max-width: 520px) {
+  .section { padding: 44px 0; }
+}
+
+/* 3) Container padding feels nicer on tiny screens */
+.container {
+  width: min(1120px, 92vw);
+  margin: 0 auto;
+}
+@media (max-width: 520px) {
+  .container { width: min(1120px, 94vw); }
+}
+
+/* 4) Make grids safe by default */
+.grid {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+
+/* 5) Fix common overflow inside flex/grid children */
+.card,
+.frame,
+.sectionGlass {
+  min-width: 0;
+}
+.card > *,
+.sectionGlass > * {
+  min-width: 0;
+}
+
+/* 6) Make long links/domains never overflow (badges etc.) */
+.badge,
+.p,
+.h1,
+.h2 {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* 7) Performance: reduce heavy blur on mobile (big win) */
+@media (max-width: 900px) {
+  .card::before,
+  .sectionGlass::before {
+    backdrop-filter: blur(10px) saturate(115%);
+    -webkit-backdrop-filter: blur(10px) saturate(115%);
+  }
+}
+@media (max-width: 520px) {
+  .card { box-shadow: 0 14px 40px rgba(0,0,0,.40); }
+  .card::before,
+  .sectionGlass::before {
+    backdrop-filter: blur(8px) saturate(110%);
+    -webkit-backdrop-filter: blur(8px) saturate(110%);
+  }
+}
+
+/* 8) Respect reduced motion users (also helps low-end phones) */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+  }
+}
+
+/* 9) Improve tap targets */
+button, .btn, a.dock-btn {
+  touch-action: manipulation;
+}
+
+/* 10) Tech pills: safe wrap + no overflow */
+.techWrap { min-width: 0; }
+.techPill {
+  max-width: 100%;
+  min-width: 0;
+}
+.techLabel { overflow-wrap: anywhere; }
+
+/* 11) Video bg helper class: make sure it always sits behind content */
+.card.hasVideoBG .cardVideoBG {
+  pointer-events: none;
+}
+
+/* 12) Optional: make badges a bit smaller on mobile */
+@media (max-width: 520px) {
+  .badge {
+    padding: 7px 10px;
+    font-size: 11px;
+  }
+}
+/* =========================
+   MOBILE FIX: cards/boxes not visible
+   ========================= */
+
+@media (max-width: 900px) {
+  /* disable heavy backdrop-filter on mobile (causes invisible cards sometimes) */
+  .card::before,
+  .sectionGlass::before {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* ensure tint layers sit UNDER content reliably */
+  .card::before,
+  .card::after,
+  .frame::before {
+    z-index: 0 !important;
+  }
+
+  /* force content above overlays */
+  .card > *,
+  .sectionGlass > * {
+    position: relative;
+    z-index: 2 !important;
+  }
+
+  /* give cards a real background so they don't look "missing" */
+  .card {
+    background: rgba(10, 11, 16, 0.55) !important;
+  }
+}

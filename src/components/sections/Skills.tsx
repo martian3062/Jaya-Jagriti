@@ -12,7 +12,10 @@ const initials = (label: string) => {
   return (parts[0][0] + parts[1][0]).toUpperCase();
 };
 
+<<<<<<< HEAD
 /** ✅ Keep coins data OUTSIDE component */
+=======
+>>>>>>> 9cf291b (Fix mobile layout + project banner video + navbar/footer)
 const COINS = [
   { x: 12, y: 22, s: 1.05, d: 0.0 },
   { x: 72, y: 18, s: 0.9, d: 0.15 },
@@ -168,10 +171,18 @@ export default function Skills() {
       <div className="skillsInner">
         <CoinIntroOverlay show={intro} onDone={() => setIntro(false)} />
 
+<<<<<<< HEAD
         <div className={`grid skillsGrid ${intro ? "isIntro" : "isReady"}`} style={{ gridTemplateColumns: "1fr 1fr", marginTop: 12 }}>
           <div className="card frame skillsPanel">
             <div className="badge">Languages</div>
             <Wrap items={languages} />
+=======
+      {/* ✅ responsive grid (no inline gridTemplateColumns) */}
+      <div className={`skillsGrid ${intro ? "isIntro" : "isReady"}`} style={{ marginTop: 12 }}>
+        <div className="card frame skillsCard">
+          <div className="badge">Languages</div>
+          <Wrap items={languages} />
+>>>>>>> 9cf291b (Fix mobile layout + project banner video + navbar/footer)
 
             <div className="badge" style={{ marginTop: 18 }}>
               Programming
@@ -179,9 +190,15 @@ export default function Skills() {
             <Wrap items={programming} />
           </div>
 
+<<<<<<< HEAD
           <div className="card frame skillsPanel">
             <div className="badge">Frameworks</div>
             <Wrap items={frameworks} />
+=======
+        <div className="card frame skillsCard">
+          <div className="badge">Frameworks</div>
+          <Wrap items={frameworks} />
+>>>>>>> 9cf291b (Fix mobile layout + project banner video + navbar/footer)
 
             <div className="badge" style={{ marginTop: 18 }}>
               Data & ML
@@ -189,6 +206,7 @@ export default function Skills() {
             <Wrap items={dataML} />
           </div>
 
+<<<<<<< HEAD
           <div className="card frame skillsPanel">
             <div className="badge">Web3</div>
             <Wrap items={web3} />
@@ -202,6 +220,19 @@ export default function Skills() {
               Tools
             </div>
             <Wrap items={tools} />
+=======
+        <div className="card frame skillsCard">
+          <div className="badge">Web3</div>
+          <Wrap items={web3} />
+        </div>
+
+        <div className="card frame skillsCard">
+          <div className="badge">DevOps & Automation</div>
+          <Wrap items={devops} />
+
+          <div className="badge" style={{ marginTop: 18 }}>
+            Tools
+>>>>>>> 9cf291b (Fix mobile layout + project banner video + navbar/footer)
           </div>
         </div>
       </div>
@@ -209,6 +240,7 @@ export default function Skills() {
       <style>{`
         #skills{ position:relative; }
 
+<<<<<<< HEAD
         /* ✅ same mobile safety padding as other sections */
         #skills .skillsInner{
           width: min(1100px, calc(100vw - 48px));
@@ -233,6 +265,21 @@ export default function Skills() {
         .skillsPanel{
           padding: 18px;
           background: rgba(255,255,255,.04);
+=======
+        /* ✅ main grid: 2 columns on desktop, 1 on mobile */
+        #skills .skillsGrid{
+          display:grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 16px;
+          align-items: stretch;
+          min-width: 0;
+        }
+
+        #skills .skillsCard{
+          padding: 18px;
+          background: rgba(255,255,255,.04);
+          min-width: 0;
+>>>>>>> 9cf291b (Fix mobile layout + project banner video + navbar/footer)
         }
 
         /* ========= Intro Overlay ========= */
@@ -249,6 +296,7 @@ export default function Skills() {
             rgba(0,0,0,.58);
           backdrop-filter: blur(10px);
           transition: opacity .35s ease;
+          overflow:hidden;
         }
 
         .introInner{
@@ -265,6 +313,7 @@ export default function Skills() {
           overflow:hidden;
           isolation:isolate;
         }
+
         .introInner::before{
           content:"";
           position:absolute;
@@ -288,6 +337,7 @@ export default function Skills() {
           isolation:isolate;
           z-index:1;
         }
+
         .coinField::after{
           content:"";
           position:absolute;
@@ -298,6 +348,7 @@ export default function Skills() {
           opacity:.85;
           z-index:0;
         }
+
         @keyframes breathe{
           0%,100%{ transform: translate3d(-2%, -2%, 0) scale(1); opacity:.85; }
           50%{ transform: translate3d(2%, 2%, 0) scale(1.06); opacity:1; }
@@ -318,6 +369,7 @@ export default function Skills() {
           animation: coinFloat 1.15s ease-in-out infinite;
           z-index:2;
         }
+
         .coin::before{
           content:"";
           position:absolute;
@@ -326,6 +378,7 @@ export default function Skills() {
           border:1px dashed rgba(255,255,255,.18);
           opacity:.75;
         }
+
         .coin::after{
           content:"";
           position:absolute;
@@ -342,6 +395,7 @@ export default function Skills() {
           opacity:.8;
           mix-blend-mode: screen;
         }
+
         @keyframes coinFloat{
           0%{ transform: translate(-50%,-50%) translateY(8px) rotate(-6deg) scale(1); }
           50%{ transform: translate(-50%,-50%) translateY(-10px) rotate(10deg) scale(1.02); }
@@ -393,6 +447,7 @@ export default function Skills() {
           justify-content:center;
           gap:8px;
           padding:6px 2px;
+          min-width: 0;
         }
         .introKicker{
           font-weight:900;
@@ -424,6 +479,10 @@ export default function Skills() {
         }
         .introHint{ font-size:12px; opacity:.7; }
 
+<<<<<<< HEAD
+=======
+        /* slight blur while intro shows */
+>>>>>>> 9cf291b (Fix mobile layout + project banner video + navbar/footer)
         .skillsGrid.isIntro{
           filter: blur(2px);
           opacity: .92;
@@ -435,6 +494,10 @@ export default function Skills() {
           transition: .35s ease;
         }
 
+<<<<<<< HEAD
+=======
+        /* pills enter */
+>>>>>>> 9cf291b (Fix mobile layout + project banner video + navbar/footer)
         .pillEnter{
           display:inline-block;
           animation: pillIn .55s cubic-bezier(.2,.9,.2,1) both;
@@ -444,11 +507,17 @@ export default function Skills() {
           to{ opacity:1; transform: translateY(0) scale(1); filter: blur(0); }
         }
 
+<<<<<<< HEAD
+=======
+        /* pills wrap + prevent overflow */
+>>>>>>> 9cf291b (Fix mobile layout + project banner video + navbar/footer)
         .techWrap{
           display:flex;
           flex-wrap:wrap;
           gap:10px;
+          min-width:0;
         }
+
         .techPill{
           position:relative;
           display:inline-flex;
@@ -465,12 +534,15 @@ export default function Skills() {
           transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
           will-change: transform;
           overflow:hidden;
+          max-width: 100%;
         }
+
         .techPill:hover{
           transform: translateY(-3px);
           border-color: rgba(231,211,162,.34);
           box-shadow: 0 18px 44px rgba(0,0,0,.32);
         }
+
         .techPill::before{
           content:"";
           position:absolute;
@@ -535,6 +607,10 @@ export default function Skills() {
           object-fit:contain;
           filter: drop-shadow(0 6px 10px rgba(0,0,0,.35));
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9cf291b (Fix mobile layout + project banner video + navbar/footer)
         .techIcon.isFallback{ position:relative; }
         .techIcon.isFallback::before{
           content:"";
@@ -545,6 +621,7 @@ export default function Skills() {
             radial-gradient(90px 70px at 70% 80%, rgba(160,130,255,.25), transparent 60%);
           filter: blur(6px);
         }
+
         .techInitials{
           position:relative;
           font-size:11px;
@@ -552,16 +629,20 @@ export default function Skills() {
           letter-spacing:.08em;
           color: rgba(234,231,223,.92);
         }
+
         .techLabel{
           font-weight:800;
           letter-spacing:.02em;
+          overflow-wrap:anywhere;
         }
 
-        @media (max-width: 900px) {
-          #skills .grid { grid-template-columns: 1fr !important; }
+        /* ✅ responsive */
+        @media (max-width: 980px){
+          #skills .skillsGrid{ grid-template-columns: 1fr; }
           .introInner{ grid-template-columns: 1fr; }
         }
 
+<<<<<<< HEAD
         /* ✅ Mobile: tighter pills + more readable */
         @media (max-width: 640px){
           #skills .skillsInner{
@@ -580,6 +661,11 @@ export default function Skills() {
           .techPill{ padding: 7px 10px; }
           .techIcon{ width: 24px; height: 24px; border-radius: 9px; }
           .techIcon.hasLogo img{ width: 16px; height: 16px; }
+=======
+        @media (max-width: 520px){
+          #skills .skillsCard{ padding: 14px; }
+          .techPill{ padding: 8px 10px; }
+>>>>>>> 9cf291b (Fix mobile layout + project banner video + navbar/footer)
         }
 
         @media (prefers-reduced-motion: reduce){
