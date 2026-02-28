@@ -1,0 +1,399 @@
+:root{
+  color-scheme: dark;
+  --bg: #07080c;
+  --ink: #eae7df;
+  --muted: rgba(234,231,223,.72);
+
+  /* old money palette */
+  --cream: #f3ead8;
+  --champagne: #e7d3a2;
+  --gold: #c9a86a;
+  --oxblood: #4a0f1f;
+  --midnight: #0a0f1f;
+  --forest: #0c1b16;
+
+  /* stronger glass tokens */
+  --glass-tint-1: rgba(10, 11, 16, 0.72);
+  --glass-tint-2: rgba(10, 11, 16, 0.50);
+  --glass-border: rgba(255,255,255,.14);
+  --glass-border-warm: rgba(231,211,162,.16);
+  --shadow: 0 20px 60px rgba(0,0,0,.45);
+
+  /* anime gradient accents */
+  --g1: radial-gradient(800px 340px at 15% 20%, rgba(201,168,106,.28), transparent 60%),
+        radial-gradient(700px 320px at 85% 25%, rgba(160,130,255,.22), transparent 60%),
+        radial-gradient(700px 320px at 60% 90%, rgba(255,120,170,.16), transparent 60%);
+  --g2: linear-gradient(135deg, rgba(201,168,106,.55), rgba(255,120,170,.25), rgba(130,200,255,.25));
+  --g3: linear-gradient(135deg, rgba(201,168,106,.9), rgba(231,211,162,.55), rgba(255,255,255,.08));
+
+  /* dock tokens */
+  --dock-idle-opacity: 0.22;
+  --dock-idle-filter: grayscale(0.45) brightness(0.85);
+  --dock-idle-bg: rgba(255,255,255,.02);
+  --dock-idle-border: rgba(231,211,162,.10);
+
+  --dock-active-opacity: 1;
+  --dock-active-bg: rgba(201,168,106,.14);
+  --dock-active-border: rgba(201,168,106,.42);
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+
+body{
+  margin:0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
+  overflow-x:hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* keep app above background video layers */
+#root{
+  position: relative;
+  z-index: 1;
+}
+
+a{ color:inherit; text-decoration:none; }
+
+a:focus-visible,
+button:focus-visible{
+  outline: 2px solid rgba(201,168,106,.65);
+  outline-offset: 2px;
+  border-radius: 10px;
+}
+
+.container{ width:min(1120px, 92vw); margin:0 auto; }
+.section{ padding: 78px 0; position: relative; }
+
+.h1{
+  font-size: clamp(42px, 4.8vw, 64px);
+  line-height: 1.03;
+  letter-spacing: -0.02em;
+  margin: 0 0 12px;
+}
+.h2{
+  font-size: clamp(26px, 2.8vw, 34px);
+  margin: 0 0 12px;
+}
+.p{ color: var(--muted); line-height: 1.65; margin: 0; }
+
+.grid{ display:grid; gap: 14px; }
+
+/* =========================
+   Badge
+   ========================= */
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap: 8px;
+  border: 1px solid rgba(231,211,162,.25);
+  background: rgba(231,211,162,.06);
+  padding: 8px 12px;
+  border-radius: 999px;
+  color: rgba(243,234,216,.92);
+  font-size: 12px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+/* =========================
+   Card: glass that stays readable
+   ========================= */
+.card{
+  position: relative;
+  isolation: isolate;
+  border-radius: 18px;
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  background: transparent;
+}
+
+/* tint layer (above video, below content) */
+.card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index: 1;
+  background: linear-gradient(180deg, var(--glass-tint-1), var(--glass-tint-2));
+  backdrop-filter: blur(16px) saturate(120%);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
+  filter: contrast(1.05);
+  pointer-events:none;
+}
+
+/* anime accent lighting layer */
+.card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index: 1;
+  background:
+    radial-gradient(600px 180px at 30% 20%, rgba(201,168,106,.14), transparent 60%),
+    radial-gradient(540px 160px at 70% 30%, rgba(160,130,255,.10), transparent 60%);
+  opacity: .65;
+  pointer-events:none;
+}
+
+.card:hover{
+  border-color: rgba(231,211,162,.22);
+}
+
+/* ✅ content above tint layers */
+.card > *{
+  position: relative;
+  z-index: 2;
+}
+
+/* =========================
+   Frame border
+   ========================= */
+.frame{ position: relative; }
+.frame::before{
+  content:"";
+  position:absolute; inset:0;
+  border-radius: 18px;
+  padding: 1px;
+  background: var(--g3);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  opacity: .55;
+  pointer-events:none;
+  z-index: 3; /* above tint, still below content */
+}
+
+/* =========================
+   Grain overlay
+   ========================= */
+.grain{
+  position: absolute;
+  inset:-20%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+  opacity: .055;
+  mix-blend-mode: overlay;
+  transform: rotate(7deg);
+  pointer-events:none;
+}
+
+/* =========================
+   Dock safe padding
+   ========================= */
+.dock-safe{
+  padding-bottom: calc(140px + env(safe-area-inset-bottom));
+}
+@media (max-width: 900px){
+  .dock-safe{
+    padding-bottom: calc(170px + env(safe-area-inset-bottom));
+  }
+}
+
+/* =========================
+   Section Glass (big blocks)
+   ========================= */
+.sectionGlass{
+  position: relative;
+  isolation: isolate;
+  padding: 22px;
+  border-radius: 22px;
+  border: 1px solid var(--glass-border-warm);
+  box-shadow: 0 24px 70px rgba(0,0,0,.55);
+  overflow: hidden;
+  background: transparent;
+}
+
+.sectionGlass::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(6, 7, 12, 0.78), rgba(6, 7, 12, 0.56)),
+    radial-gradient(900px 280px at 20% 20%, rgba(201,168,106,.12), transparent 60%),
+    radial-gradient(700px 260px at 80% 30%, rgba(160,130,255,.10), transparent 60%);
+  backdrop-filter: blur(18px) saturate(125%);
+  -webkit-backdrop-filter: blur(18px) saturate(125%);
+  filter: contrast(1.06);
+  pointer-events:none;
+}
+
+.sectionGlass > *{
+  position: relative;
+  z-index: 2;
+}
+
+/* =========================
+   Buttons
+   ========================= */
+.btn{
+  border: 1px solid rgba(231,211,162,.22);
+  background: rgba(255,255,255,.06);
+  color: rgba(243,234,216,.95);
+  padding: 10px 14px;
+  border-radius: 14px;
+  cursor: pointer;
+}
+
+.btn.ghost{
+  background: rgba(255,255,255,.03);
+  opacity: .9;
+}
+
+/* =========================
+   Mini Dock button states
+   ========================= */
+.dock-btn{
+  border-radius: 14px;
+  padding: 10px 10px;
+  cursor: pointer;
+  text-align: left;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: opacity .18s ease, transform .18s ease, filter .18s ease, background .18s ease, border-color .18s ease;
+  color: rgba(243,234,216,.92);
+}
+
+.dock-btn.is-idle{
+  opacity: var(--dock-idle-opacity);
+  filter: var(--dock-idle-filter);
+  background: var(--dock-idle-bg);
+  border: 1px solid var(--dock-idle-border);
+}
+
+.dock-btn.is-idle:hover{
+  opacity: .55;
+  transform: translateY(-1px);
+}
+
+.dock-btn.is-active{
+  opacity: var(--dock-active-opacity);
+  filter: none;
+  background: var(--dock-active-bg);
+  border: 1px solid var(--dock-active-border);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.35);
+}
+
+/* =========================
+   Card video background support
+   ========================= */
+.card.hasVideoBG{
+  position: relative;
+  overflow: hidden;
+}
+
+/* video layer inside card */
+.card.hasVideoBG .cardVideoBG{
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* tint layers above video */
+.card.hasVideoBG::before,
+.card.hasVideoBG::after{
+  z-index: 1;
+}
+
+/* content above everything */
+.card.hasVideoBG > *{
+  position: relative;
+  z-index: 2;
+}
+
+/* ---------- Tech Pills (logos + auto-generated initials) ---------- */
+.techPill{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 999px;
+
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.14);
+  box-shadow: 0 14px 30px rgba(0,0,0,.28);
+
+  user-select: none;
+  backdrop-filter: blur(10px);
+}
+
+.techIcon{
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.16);
+  overflow: hidden;
+}
+
+.techIcon.hasLogo img{
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,.35));
+}
+
+.techIcon.isFallback{
+  position: relative;
+}
+.techIcon.isFallback::before{
+  content:"";
+  position:absolute;
+  inset:-20%;
+  background:
+    radial-gradient(90px 70px at 30% 20%, rgba(201,168,106,.35), transparent 60%),
+    radial-gradient(90px 70px at 70% 80%, rgba(160,130,255,.25), transparent 60%);
+  filter: blur(6px);
+}
+.techInitials{
+  position: relative;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .08em;
+  color: rgba(234,231,223,.92);
+}
+
+.techText{
+  display: grid;
+  line-height: 1.05;
+}
+.techLabel{
+  font-size: 12px;
+  font-weight: 850;
+  color: rgba(234,231,223,.92);
+}
+.techSub{
+  margin-top: 2px;
+  font-size: 10px;
+  opacity: .7;
+}
+
+/* Optional: tighter wrap layout for skills groups */
+.techWrap{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+/* ✅ Landscape fix: push main text up so it doesn't sit behind TV */
+@media (max-height: 520px) and (orientation: landscape) {
+  .introMain {
+    min-height: 100vh;          /* keep full screen */
+    justify-content: flex-start; /* stop vertical centering */
+    padding-top: 22px;          /* move content up */
+    padding-bottom: 12px;
+  }
+}
+
+/* Optional: even tighter screens */
+@media (max-height: 420px) and (orientation: landscape) {
+  .introMain {
+    padding-top: 14px;
+  }
+}
