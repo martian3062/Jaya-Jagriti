@@ -294,252 +294,264 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
             "radial-gradient(900px 420px at 20% 40%, rgba(0,0,0,.35), transparent 65%), rgba(0,0,0,.35)"
         }}
       />
+{/* MAIN CONTENT */}
+<div className="introMain">
+  <div className="badge" style={{ width: "max-content", maxWidth: "100%", display: "inline-flex" }}>
+    नमस्कारः जयतु भवतः
+  </div>
 
-      {/* MAIN CONTENT */}
-      <div className="introMain">
-        <div className="badge" style={{ width: "max-content", maxWidth: "100%", display: "inline-flex" }}>
-          नमस्कारः जयतु भवतः
-        </div>
+  <h1 className="h1" style={{ marginTop: 10 }}>
+    Jaya Jagriti
+  </h1>
 
-        <h1 className="h1" style={{ marginTop: 10 }}>
-          Jaya Jagriti
-        </h1>
+  <p className="p" style={{ maxWidth: 520 }}>
+    Enter the portfolio — explore projects and updates.
+  </p>
 
-        <p className="p" style={{ maxWidth: 520 }}>
-          Enter the portfolio — explore projects and updates.
-        </p>
+  <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 8 }}>
+    <motion.button
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      onClick={onEnter}
+      className="card frame"
+      style={btnStyle}
+      type="button"
+    >
+      <div style={{ fontWeight: 850, letterSpacing: ".04em" }}>Enter</div>
+      <div style={{ fontSize: 12, opacity: 0.75, marginTop: 4 }}>Overview → Skills → Projects → Contact</div>
+    </motion.button>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 8 }}>
-          <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onClick={onEnter} className="card frame" style={btnStyle} type="button">
-            <div style={{ fontWeight: 850, letterSpacing: ".04em" }}>Enter</div>
-            <div style={{ fontSize: 12, opacity: 0.75, marginTop: 4 }}>Overview → Skills → Projects → Contact</div>
-          </motion.button>
+    <motion.button
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      onClick={playUpdates}
+      className="card frame"
+      style={btnStyle}
+      type="button"
+    >
+      <div style={{ fontWeight: 850, letterSpacing: ".04em" }}>Updates</div>
+      <div style={{ fontSize: 12, opacity: 0.9, marginTop: 4 }}>Watch what’s coming next</div>
+    </motion.button>
+  </div>
+</div>
 
-          <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onClick={playUpdates} className="card frame" style={btnStyle} type="button">
-            <div style={{ fontWeight: 850, letterSpacing: ".04em" }}>Updates</div>
-            <div style={{ fontSize: 12, opacity: 0.9, marginTop: 4 }}>Watch what’s coming next</div>
-          </motion.button>
-        </div>
+{/* TOP RIGHT: Bongo Cat (hidden on mobile) */}
+<a
+  className="bongoDock"
+  href={BONGO_LINK}
+  target="_blank"
+  rel="noreferrer"
+  title="Bongo Cat OBS Plugin (click)"
+  style={{
+    position: "fixed",
+    top: "max(16px, env(safe-area-inset-top))",
+    right: "max(16px, env(safe-area-inset-right))",
+    zIndex: 80,
+    width: 280,
+    borderRadius: 18,
+    border: "1px solid rgba(231,211,162,.22)",
+    background: "rgba(10,10,10,.30)",
+    backdropFilter: "blur(10px)",
+    boxShadow: "0 18px 50px rgba(0,0,0,.35)",
+    textDecoration: "none",
+    padding: 12,
+    userSelect: "none",
+    transform: "scale(.75)",
+    transformOrigin: "right top"
+  }}
+>
+  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 10 }}>
+    <div style={{ color: "rgba(243,234,216,.92)", fontWeight: 900, fontSize: 12, letterSpacing: ".04em" }}>
+      BONGO CAT • OBS
+    </div>
+    <div style={{ color: "rgba(243,234,216,.65)", fontSize: 12, fontWeight: 800 }}>↗</div>
+  </div>
+
+  <div
+    style={{
+      position: "relative",
+      height: 150,
+      borderRadius: 14,
+      overflow: "hidden",
+      background: "radial-gradient(160px 80px at 20% 30%, rgba(231,211,162,.18), transparent 60%), rgba(0,0,0,.20)"
+    }}
+  >
+    <img
+      src={`${BONGO_ASSETS}/catbg.png`}
+      alt=""
+      draggable={false}
+      style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain" }}
+    />
+    <img
+      src={keySrc}
+      alt=""
+      draggable={false}
+      style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain" }}
+    />
+    <img
+      src={leftSrc}
+      alt=""
+      draggable={false}
+      style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain" }}
+    />
+    <img
+      src={rightSrc}
+      alt=""
+      draggable={false}
+      style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain" }}
+    />
+
+    {hasMousePng && (
+      <img
+        src={`${BONGO_ASSETS}/mouse.png`}
+        alt=""
+        draggable={false}
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "contain",
+          transform: `translate(${mouseOffset.x * 6}px, ${mouseOffset.y * 4}px) ${mouseDown ? "translateY(2px)" : ""}`,
+          transition: "transform 90ms ease"
+        }}
+      />
+    )}
+
+    <div
+      key={slam}
+      style={{
+        position: "absolute",
+        inset: 0,
+        opacity: 0,
+        background: "rgba(231,211,162,.12)",
+        animation: "bongoFlash 140ms ease"
+      }}
+    />
+  </div>
+
+  <div style={{ marginTop: 10, color: "rgba(243,234,216,.70)", fontSize: 12, lineHeight: 1.3 }}>
+    Type / click / move mouse — sprites react.
+  </div>
+</a>
+
+{/* ========================= */}
+{/* ✅ TV Dock + Zoom Option  */}
+{/* ========================= */}
+<div className={`tvDock ${tvZoom === "zoom" ? "tvDockZoom" : ""}`}>
+  <div
+    style={{
+      borderRadius: 18,
+      border: "1px solid rgba(231,211,162,.22)",
+      background: "rgba(10,10,10,.35)",
+      backdropFilter: "blur(10px)",
+      boxShadow: "0 18px 60px rgba(0,0,0,.45)",
+      padding: 12
+    }}
+  >
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
+      <div style={{ color: "rgba(243,234,216,.92)", fontWeight: 900, fontSize: 12, letterSpacing: ".06em" }}>
+        VEO AI TV
       </div>
 
-      {/* TOP RIGHT: Bongo Cat (hidden on mobile) */}
-      <a
-        className="bongoDock"
-        href={BONGO_LINK}
-        target="_blank"
-        rel="noreferrer"
-        title="Bongo Cat OBS Plugin (click)"
-        style={{
-          position: "fixed",
-          top: "max(16px, env(safe-area-inset-top))",
-          right: "max(16px, env(safe-area-inset-right))",
-          zIndex: 80,
-          width: 280,
-          borderRadius: 18,
-          border: "1px solid rgba(231,211,162,.22)",
-          background: "rgba(10,10,10,.30)",
-          backdropFilter: "blur(10px)",
-          boxShadow: "0 18px 50px rgba(0,0,0,.35)",
-          textDecoration: "none",
-          padding: 12,
-          userSelect: "none",
-          transform: "scale(.75)",
-          transformOrigin: "right top"
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 10 }}>
-          <div style={{ color: "rgba(243,234,216,.92)", fontWeight: 900, fontSize: 12, letterSpacing: ".04em" }}>
-            BONGO CAT • OBS
-          </div>
-          <div style={{ color: "rgba(243,234,216,.65)", fontSize: 12, fontWeight: 800 }}>↗</div>
-        </div>
+      <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+        <button onClick={prevCh} className="tvBtn" type="button">
+          ◀
+        </button>
+        <button onClick={nextCh} className="tvBtn" type="button">
+          ▶
+        </button>
 
-        <div
-          style={{
-            position: "relative",
-            height: 150,
-            borderRadius: 14,
-            overflow: "hidden",
-            background: "radial-gradient(160px 80px at 20% 30%, rgba(231,211,162,.18), transparent 60%), rgba(0,0,0,.20)"
-          }}
-        >
-          <img
-            src={`${BONGO_ASSETS}/catbg.png`}
-            alt=""
-            draggable={false}
-            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain" }}
-          />
-          <img
-            src={keySrc}
-            alt=""
-            draggable={false}
-            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain" }}
-          />
-          <img
-            src={leftSrc}
-            alt=""
-            draggable={false}
-            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain" }}
-          />
-          <img
-            src={rightSrc}
-            alt=""
-            draggable={false}
-            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain" }}
-          />
+        {tvZoom === "default" ? (
+          <button onClick={() => setTvZoom("zoom")} className="tvBtn tvBtnAlt" type="button" title="Zoom in TV">
+            ⤢
+          </button>
+        ) : (
+          <button onClick={() => setTvZoom("default")} className="tvBtn tvBtnAlt" type="button" title="Back to default">
+            ⤡
+          </button>
+        )}
+      </div>
+    </div>
 
-          {hasMousePng && (
-            <img
-              src={`${BONGO_ASSETS}/mouse.png`}
-              alt=""
-              draggable={false}
+    <div
+      style={{
+        marginTop: 10,
+        borderRadius: 14,
+        overflow: "hidden",
+        position: "relative",
+        aspectRatio: "16 / 10",
+        background: "rgba(0,0,0,.55)",
+        border: "1px solid rgba(231,211,162,.14)"
+      }}
+    >
+      {CHANNELS[ch].type === "video" ? (
+        <>
+          <video
+            ref={tvRef}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            poster={posterFor((CHANNELS[ch] as any).src)}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              filter: "contrast(1.05) saturate(1.05)"
+            }}
+          />
+          {tvLoading && (
+            <div
               style={{
                 position: "absolute",
                 inset: 0,
-                width: "100%",
-                height: "100%",
-                objectFit: "contain",
-                transform: `translate(${mouseOffset.x * 6}px, ${mouseOffset.y * 4}px) ${mouseDown ? "translateY(2px)" : ""}`,
-                transition: "transform 90ms ease"
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                background:
+                  "radial-gradient(120px 80px at 50% 40%, rgba(231,211,162,.10), transparent 70%), rgba(0,0,0,.65)",
+                color: "rgba(243,234,216,.92)",
+                fontWeight: 900,
+                letterSpacing: ".08em",
+                fontSize: 12
               }}
-            />
+            >
+              LOADING…
+            </div>
           )}
-
-          <div
-            key={slam}
-            style={{
-              position: "absolute",
-              inset: 0,
-              opacity: 0,
-              background: "rgba(231,211,162,.12)",
-              animation: "bongoFlash 140ms ease"
-            }}
-          />
+        </>
+      ) : CHANNELS[ch].type === "signal" ? (
+        <div className="tvSignal">
+          <div className="tvSignalText">NO SIGNAL</div>
+          <div className="tvSignalSub">Adjust antenna • try next channel</div>
         </div>
-
-        <div style={{ marginTop: 10, color: "rgba(243,234,216,.70)", fontSize: 12, lineHeight: 1.3 }}>
-          Type / click / move mouse — sprites react.
+      ) : (
+        <div className="tvComing">
+          <div className="tvComingText">COMING SOON</div>
+          <div className="tvSignalSub">Channel under construction</div>
         </div>
-      </a>
+      )}
 
-      {/* ========================= */}
-      {/* ✅ TV Dock + Zoom Option   */}
-      {/* ========================= */}
-      <div className={`tvDock ${tvZoom === "zoom" ? "tvDockZoom" : ""}`}>
-        <div
-          style={{
-            borderRadius: 18,
-            border: "1px solid rgba(231,211,162,.22)",
-            background: "rgba(10,10,10,.35)",
-            backdropFilter: "blur(10px)",
-            boxShadow: "0 18px 60px rgba(0,0,0,.45)",
-            padding: 12
-          }}
-        >
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
-            <div style={{ color: "rgba(243,234,216,.92)", fontWeight: 900, fontSize: 12, letterSpacing: ".06em" }}>
-              VEO AI TV
-            </div>
+      <div className="tvScanlines" />
+      <div className="tvNoise" />
+      <div key={switchFx} className="tvSwitchFx" />
 
-            <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-              <button onClick={prevCh} className="tvBtn" type="button">
-                ◀
-              </button>
-              <button onClick={nextCh} className="tvBtn" type="button">
-                ▶
-              </button>
-
-              {/* Zoom toggle */}
-              {tvZoom === "default" ? (
-                <button onClick={() => setTvZoom("zoom")} className="tvBtn tvBtnAlt" type="button" title="Zoom in TV">
-                  ⤢
-                </button>
-              ) : (
-                <button onClick={() => setTvZoom("default")} className="tvBtn tvBtnAlt" type="button" title="Back to default">
-                  ⤡
-                </button>
-              )}
-            </div>
-          </div>
-
-          <div
-            style={{
-              marginTop: 10,
-              borderRadius: 14,
-              overflow: "hidden",
-              position: "relative",
-              aspectRatio: "16 / 10",
-              background: "rgba(0,0,0,.55)",
-              border: "1px solid rgba(231,211,162,.14)"
-            }}
-          >
-            {CHANNELS[ch].type === "video" ? (
-              <>
-                <video
-                  ref={tvRef}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  preload="metadata"
-                  poster={posterFor((CHANNELS[ch] as any).src)}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    filter: "contrast(1.05) saturate(1.05)"
-                  }}
-                />
-                {tvLoading && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      background:
-                        "radial-gradient(120px 80px at 50% 40%, rgba(231,211,162,.10), transparent 70%), rgba(0,0,0,.65)",
-                      color: "rgba(243,234,216,.92)",
-                      fontWeight: 900,
-                      letterSpacing: ".08em",
-                      fontSize: 12
-                    }}
-                  >
-                    LOADING…
-                  </div>
-                )}
-              </>
-            ) : CHANNELS[ch].type === "signal" ? (
-              <div className="tvSignal">
-                <div className="tvSignalText">NO SIGNAL</div>
-                <div className="tvSignalSub">Adjust antenna • try next channel</div>
-              </div>
-            ) : (
-              <div className="tvComing">
-                <div className="tvComingText">COMING SOON</div>
-                <div className="tvSignalSub">Channel under construction</div>
-              </div>
-            )}
-
-            <div className="tvScanlines" />
-            <div className="tvNoise" />
-            <div key={switchFx} className="tvSwitchFx" />
-
-            <div className="tvHud">
-              <div className="tvCh">{String(CHANNELS[ch].id).padStart(2, "0")}</div>
-              <div className="tvName">{CHANNELS[ch].name}</div>
-            </div>
-          </div>
-
-          <div style={{ marginTop: 10, display: "flex", justifyContent: "space-between", gap: 10 }}>
-            <div style={{ color: "rgba(243,234,216,.70)", fontSize: 12 }}>12 channels • VHS vibe</div>
-            <div style={{ color: "rgba(243,234,216,.45)", fontSize: 12 }}>{tvZoom === "zoom" ? "Zoomed" : ""}</div>
-          </div>
-        </div>
+      <div className="tvHud">
+        <div className="tvCh">{String(CHANNELS[ch].id).padStart(2, "0")}</div>
+        <div className="tvName">{CHANNELS[ch].name}</div>
       </div>
+    </div>
 
-    {/* Inline styles */}
+    <div style={{ marginTop: 10, display: "flex", justifyContent: "space-between", gap: 10 }}>
+      <div style={{ color: "rgba(243,234,216,.70)", fontSize: 12 }}>12 channels • VHS vibe</div>
+      <div style={{ color: "rgba(243,234,216,.45)", fontSize: 12 }}>{tvZoom === "zoom" ? "Zoomed" : ""}</div>
+    </div>
+  </div>
+</div>
+
+{/* Inline styles */}
 <style>
   {`
     @keyframes bongoFlash {
@@ -549,7 +561,7 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
     }
 
     /* ===================== */
-    /* ✅ INTRO MAIN (fixed)  */
+    /* ✅ INTRO MAIN          */
     /* ===================== */
     .introMain{
       position: relative;
@@ -559,8 +571,6 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
 
       display: flex;
       flex-direction: column;
-
-      /* default = centered on normal screens */
       justify-content: center;
 
       gap: 14px;
@@ -568,64 +578,83 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
       padding: clamp(24px, 6vh, 64px) 0;
     }
 
-    /* ✅ Landscape / short height: push text UP so it doesn't collide with TV */
-    @media (max-height: 520px) and (orientation: landscape){
-      .introMain{
-        justify-content: flex-start;
-        padding-top: 22px;
-        padding-bottom: 12px;
-      }
-    }
-    @media (max-height: 420px) and (orientation: landscape){
-      .introMain{
-        padding-top: 14px;
-      }
-    }
-
+    /* ✅ Mobile */
     @media (max-width: 640px){
       .introMain{
         width: calc(100vw - 24px);
         margin: 0;
         padding: 18px 12px;
         min-height: unset;
-
-        /* ✅ fix: was justify-items (grid only) */
         align-items: flex-start;
         justify-content: flex-start;
       }
-    }
-
-    @media (max-width: 640px){
       .bongoDock{ display: none !important; }
     }
 
+    /* ======================================= */
+    /* ✅ Production fix: LANDSCAPE / short h   */
+    /* Push text up + reserve space + shrink TV*/
+    /* ======================================= */
+    @media (orientation: landscape) and (max-height: 700px){
+      .introMain{
+        justify-content: flex-start !important;
+        padding-top: 10px !important;
+        padding-bottom: 170px !important; /* ✅ reserve space so TV can't cover */
+        min-height: 100vh;
+      }
+      .introMain .h1{
+        margin-top: 6px !important;
+      }
+    }
+
+    @media (orientation: landscape) and (max-height: 520px){
+      .introMain{
+        padding-top: 6px !important;
+        padding-bottom: 190px !important;
+      }
+    }
+
     /* ===================== */
-    /* ✅ TV DOCK (sticky)    */
+    /* ✅ TV DOCK             */
     /* ===================== */
-  /* ✅ TV DOCK (sticky) — default is 80% of current size */
-.tvDock{
-  position: fixed;
-  left: max(16px, env(safe-area-inset-left));
-  bottom: max(16px, env(safe-area-inset-bottom));
-  z-index: 70;
+    .tvDock{
+      position: fixed;
+      left: max(16px, env(safe-area-inset-left));
+      bottom: max(16px, env(safe-area-inset-bottom));
+      z-index: 70;
 
-  width: min(360px, calc(100vw - 32px));
-  transform: scale(.8);              /* ✅ 80% */
-  transform-origin: left bottom;
-}
+      width: min(360px, calc(100vw - 32px));
+      transform: scale(.8);
+      transform-origin: left bottom;
+    }
 
-/* mobile default corner — also 80% */
-@media (max-width: 640px){
-  .tvDock{
-    left: auto;
-    right: max(12px, env(safe-area-inset-right));
-    bottom: max(12px, env(safe-area-inset-bottom));
+    /* ✅ Smaller TV in landscape so it never overlaps title */
+    @media (orientation: landscape) and (max-height: 700px){
+      .tvDock{
+        transform: scale(.68) !important;
+        left: max(10px, env(safe-area-inset-left)) !important;
+        bottom: max(10px, env(safe-area-inset-bottom)) !important;
+      }
+    }
+    @media (orientation: landscape) and (max-height: 520px){
+      .tvDock{
+        transform: scale(.60) !important;
+        bottom: max(8px, env(safe-area-inset-bottom)) !important;
+      }
+    }
 
-    width: min(340px, calc(100vw - 24px));
-    transform: scale(.8);            /* ✅ 80% */
-    transform-origin: right bottom;
-  }
-}
+    /* Mobile TV corner */
+    @media (max-width: 640px){
+      .tvDock{
+        left: auto;
+        right: max(12px, env(safe-area-inset-right));
+        bottom: max(12px, env(safe-area-inset-bottom));
+        width: min(340px, calc(100vw - 24px));
+        transform: scale(.8);
+        transform-origin: right bottom;
+      }
+    }
+
     .tvBtn{
       border-radius: 10px;
       padding: 6px 10px;
@@ -733,7 +762,7 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
     }
 
     /* ===================== */
-    /* ✅ OPTIONAL ZOOM MODE  */
+    /* ✅ ZOOM MODE           */
     /* ===================== */
     .tvDockZoom{
       left: 50%;
@@ -743,6 +772,14 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
       transform-origin: center bottom;
       width: min(740px, calc(100vw - 24px));
       z-index: 120;
+    }
+
+    /* keep zoom usable in landscape */
+    @media (orientation: landscape) and (max-height: 700px){
+      .tvDockZoom{
+        width: min(620px, calc(100vw - 16px)) !important;
+        bottom: 10px !important;
+      }
     }
 
     @media (max-width: 640px){
@@ -756,6 +793,7 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
     }
   `}
 </style>
+  
     </motion.div>
   );
 }
