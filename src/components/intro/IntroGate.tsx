@@ -47,14 +47,14 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
   { id: 4, name: "CH-04 • SIGNAL LOST", type: "signal" },
   { id: 5, name: "CH-05 • Coming Soon", type: "coming" },
 
-  { id: 6, name: "CH-06 • ਪੰਜਾਬ", type: "video", src: "/assets/tv/ch06.web.mp4" },
-  { id: 7, name: "CH-07 • Cringeposting", type: "video", src: "/assets/tv/ch01.web.mp4" },
+  { id: 6, name: "CH-06 • ਪੰਜਾਬ", type: "video", src: "/assets/tv/ch0600.web.mp4" },
+  { id: 7, name: "CH-07 • Cringeposting", type: "video", src: "/assets/tv/ch0100.web.mp4" },
 
   { id: 8, name: "CH-08 • SIGNAL LOST", type: "signal" },
 
   { id: 9, name: "CH-09 • Hehe" ,type: "video", src: "/assets/tv/ch07.web.mp4" },
 
-  { id: 10, name: "CH-10 • ....", type: "video", src: "/assets/tv/ch10.web.mp4" },
+  { id: 10, name: "CH-10 • ....", type: "video", src: "/assets/tv/ch100.web.mp4" },
 
   { id: 11, name: "CH-11 • Coming Soon", type: "coming" },
 
