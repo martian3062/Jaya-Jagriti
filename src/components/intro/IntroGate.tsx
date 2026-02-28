@@ -40,7 +40,7 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
   | { id: number; name: string; type: "signal" }
   | { id: number; name: string; type: "coming" }
 > = [
-  { id: 1, name: "CH-01 • Meeeee", type: "video", src: "/assets/tv/ch01.web.mp4" },
+  { id: 1, name: "CH-01 • Meeeee", type: "video", src: "/assets/tv/ch09.web.mp4" },
   { id: 2, name: "CH-02 • Hooomieesss", type: "video", src: "/assets/tv/ch02.web.mp4" },
   { id: 3, name: "CH-03 • about", type: "video", src: "/assets/tv/ch03.web.mp4" },
 
@@ -48,11 +48,11 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
   { id: 5, name: "CH-05 • Coming Soon", type: "coming" },
 
   { id: 6, name: "CH-06 • ਪੰਜਾਬ tv", type: "video", src: "/assets/tv/ch06.web.mp4" },
-  { id: 7, name: "CH-07 • Cringeposting", type: "video", src: "/assets/tv/ch07.web.mp4" },
+  { id: 7, name: "CH-07 • Cringeposting", type: "video", src: "/assets/tv/ch01.web.mp4" },
 
   { id: 8, name: "CH-08 • SIGNAL LOST", type: "signal" },
 
-  { id: 9, name: "CH-09 • Hehe" ,type: "video", src: "/assets/tv/ch09.web.mp4" },
+  { id: 9, name: "CH-09 • Hehe" ,type: "video", src: "/assets/tv/ch07.web.mp4" },
 
   { id: 10, name: "CH-10 • ....", type: "video", src: "/assets/tv/ch10.web.mp4" },
 
