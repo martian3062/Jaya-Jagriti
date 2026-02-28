@@ -31,7 +31,7 @@ export default function Footer() {
           <div className="footerTop">
             <div className="footerLeft">
               <div className="footerTitle">Let’s build something ✨</div>
-              <div className="footerSub">© {year} Jaya Jagriti • Open to work</div>
+              <div className="footerSub"> Jaya Jagriti • Open to work</div>
             </div>
 
             <div className="footerPills">
