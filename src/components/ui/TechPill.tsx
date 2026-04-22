@@ -20,12 +20,6 @@ type LenisProviderProps = {
   options?: Partial<ConstructorParameters<typeof Lenis>[0]>;
 };
 
-/**
- * ✅ Mobile-safe Lenis
- * - Enables smooth scrolling mainly for desktop wheel
- * - Disables on touch devices (prevents “blank middle / no scroll” bugs)
- * - Respects prefers-reduced-motion
- */
 export function LenisProvider({ children, options }: LenisProviderProps) {
   const lenisRef = useRef<Lenis | null>(null);
   const rafIdRef = useRef<number | null>(null);
@@ -36,15 +30,13 @@ export function LenisProvider({ children, options }: LenisProviderProps) {
     const prefersReduced =
       window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
 
-    // ✅ treat touch devices as mobile -> disable Lenis
+    // Touch devices skip Lenis to avoid mobile scroll bugs.
     const isTouch =
       "ontouchstart" in window ||
       (navigator.maxTouchPoints ?? 0) > 0 ||
       window.matchMedia?.("(pointer: coarse)")?.matches;
 
-    // If mobile/touch OR reduced motion -> do not start Lenis
     if (prefersReduced || isTouch) {
-      // make sure any existing instance is cleaned
       if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
       rafIdRef.current = null;
 
@@ -55,12 +47,11 @@ export function LenisProvider({ children, options }: LenisProviderProps) {
       return;
     }
 
-    // Create once (desktop only)
     if (!lenisRef.current) {
       lenisRef.current = new Lenis({
         duration: 1.05,
         smoothWheel: true,
-        // touch smoothing is where many mobile bugs come from
+        // Touch smoothing can cause mobile scroll issues.
         smoothTouch: false as any, // Lenis types may not include it; safe to omit if you prefer
         ...options
       });
@@ -84,8 +75,7 @@ export function LenisProvider({ children, options }: LenisProviderProps) {
         lenisRef.current = null;
       }
     };
-    // ✅ IMPORTANT: do not re-init because options object changes
-    // If you need dynamic options, pass a memoized object from parent.
+    // Keep Lenis stable unless this provider remounts.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

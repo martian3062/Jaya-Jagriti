@@ -1,8 +1,3 @@
-// IntroGate.tsx (FULL UPDATED) ✅
-// - Fixes slow TV video load: single <video>, lazy src, preload metadata, posters, idle prefetch next/prev
-// - TV sticks on desktop + mobile (no forced scale shrink)
-// - TV Zoom: ONLY an option (Zoom In / Default) — doesn’t change your normal dock behavior
-// - Cleans imports (no duplicate React import)
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
@@ -11,7 +6,6 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
   const BONGO_LINK = "https://obsproject.com/forum/resources/bongobs-cat-plugin.992/";
   const BONGO_ASSETS = "/assets/bongo";
 
-  // ---- Bongo sprite state ----
   const [tapSide, setTapSide] = useState<"L" | "R">("L");
   const tapSideRef = useRef<"L" | "R">("L");
   useEffect(() => {
@@ -32,7 +26,7 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
 
   const [hasMousePng, setHasMousePng] = useState(true);
 
-  // ---- Retro TV ----
+  // Retro TV channels and controls.
   const UPDATES_SRC = "/assets/tv/upcoming.web.mp4";
 
   const CHANNELS: Array<
@@ -58,7 +52,6 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
 
   { id: 11, name: "CH-11 • Coming Soon", type: "coming" },
 
-  // keep your updates var, just make sure it points to .web.mp4 too
   { id: 12, name: "CH-12 • UPDATES", type: "video", src: UPDATES_SRC }
 ];
 
@@ -81,15 +74,12 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
     else window.open(UPDATES_SRC, "_blank");
   };
 
-  // --- posters (create these files for best UX) ---
-  // Example: /assets/tv/posters/ch01.jpg, ch02.jpg, ..., upcoming.jpg
   const posterFor = (src?: string) => {
     if (!src) return "/assets/tv/posters/fallback.jpg";
     const base = src.split("/").pop()?.replace(".mp4", "") ?? "fallback";
     return `/assets/tv/posters/${base}.jpg`;
   };
 
-  // --- prefetch helper (next/prev only) ---
   function prefetchVideo(url: string) {
     const safeId = `prefetch-${encodeURIComponent(url)}`;
     if (document.getElementById(safeId)) return;
@@ -101,7 +91,6 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
     document.head.appendChild(link);
   }
 
-  // ---- Detect mouse.png ----
   useEffect(() => {
     const img = new Image();
     img.onload = () => setHasMousePng(true);
@@ -109,7 +98,6 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
     img.src = `${BONGO_ASSETS}/mouse.png`;
   }, []);
 
-  // ---- Input handlers ----
   useEffect(() => {
     let slamTimer: number | null = null;
     let releaseTimer: number | null = null;
@@ -199,23 +187,18 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
   const leftSrc = lFrame === "up" ? `${BONGO_ASSETS}/leftup.png` : `${BONGO_ASSETS}/left${lFrame}.png`;
   const rightSrc = rFrame === "up" ? `${BONGO_ASSETS}/rightup.png` : `${BONGO_ASSETS}/right${rFrame}.png`;
   const keySrc = `${BONGO_ASSETS}/k${kFrame}.png`;
-
-  // ===========================
-  // ✅ TV Optimized Video Loader
-  // ===========================
   const tvRef = useRef<HTMLVideoElement | null>(null);
   const [tvLoading, setTvLoading] = useState(false);
 
-  // TV Zoom state (ONLY optional)
+
   const [tvZoom, setTvZoom] = useState<"default" | "zoom">("default");
 
-  // Lazy-load src only when channel is video
+  // Lazy-load video sources only when the channel needs them.
   useEffect(() => {
     const cur = CHANNELS[ch];
     const v = tvRef.current;
     if (!v) return;
 
-    // cleanup previous listeners safely by resetting handlers via new scope below
     if (cur.type !== "video") {
       v.pause?.();
       v.removeAttribute("src");
@@ -231,7 +214,6 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
     // IMPORTANT: set poster before src so browser can paint quickly
     v.poster = posterFor(src);
 
-    // load
     v.preload = "metadata";
     v.src = src;
     v.load();
@@ -244,7 +226,6 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
     v.addEventListener("waiting", onWaiting);
     v.addEventListener("playing", onPlaying);
 
-    // autoplay (ignore errors on some browsers)
     v.play().catch(() => {});
 
     return () => {
@@ -255,7 +236,7 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ch]);
 
-  // Prefetch next/prev videos on idle for smoother switching
+  // Prefetch nearby channels during idle time for smoother switching.
   useEffect(() => {
     const idle = (cb: () => void) => {
       const ric = (window as any).requestIdleCallback;
@@ -285,7 +266,6 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
       exit={{ opacity: 0 }}
       style={{ position: "fixed", inset: 0, zIndex: 999, overflow: "hidden" }}
     >
-      {/* Dark veil */}
       <div
         style={{
           position: "absolute",
@@ -294,7 +274,6 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
             "radial-gradient(900px 420px at 20% 40%, rgba(0,0,0,.35), transparent 65%), rgba(0,0,0,.35)"
         }}
       />
-{/* MAIN CONTENT */}
 <div className="introMain">
   <div className="badge" style={{ width: "max-content", maxWidth: "100%", display: "inline-flex" }}>
     नमस्कारः जयतु भवतः
@@ -335,7 +314,6 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
   </div>
 </div>
 
-{/* TOP RIGHT: Bongo Cat (hidden on mobile) */}
 <a
   className="bongoDock"
   href={BONGO_LINK}
@@ -435,9 +413,6 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
   </div>
 </a>
 
-{/* ========================= */}
-{/* ✅ TV Dock + Zoom Option  */}
-{/* ========================= */}
 <div className={`tvDock ${tvZoom === "zoom" ? "tvDockZoom" : ""}`}>
   <div
     style={{
@@ -551,7 +526,6 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
   </div>
 </div>
 
-{/* Inline styles */}
 <style>
   {`
     @keyframes bongoFlash {
@@ -560,9 +534,7 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
       100% { opacity: 0; }
     }
 
-    /* ===================== */
-    /* ✅ INTRO MAIN          */
-    /* ===================== */
+    /* Intro layout. */
     .introMain{
       position: relative;
       z-index: 5;
@@ -578,7 +550,7 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
       padding: clamp(24px, 6vh, 64px) 0;
     }
 
-    /* ✅ Mobile */
+    /* Mobile layout. */
     @media (max-width: 640px){
       .introMain{
         width: calc(100vw - 24px);
@@ -591,15 +563,12 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
       .bongoDock{ display: none !important; }
     }
 
-    /* ======================================= */
-    /* ✅ Production fix: LANDSCAPE / short h   */
-    /* Push text up + reserve space + shrink TV*/
-    /* ======================================= */
+    /* Landscape and short screens: keep the intro and TV from colliding. */
     @media (orientation: landscape) and (max-height: 700px){
       .introMain{
         justify-content: flex-start !important;
         padding-top: 10px !important;
-        padding-bottom: 170px !important; /* ✅ reserve space so TV can't cover */
+        padding-bottom: 170px !important; /* reserve space so TV can't cover */
         min-height: 100vh;
       }
       .introMain .h1{
@@ -614,9 +583,7 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
       }
     }
 
-    /* ===================== */
-    /* ✅ TV DOCK             */
-    /* ===================== */
+    /* TV dock layout. */
     .tvDock{
       position: fixed;
       left: max(16px, env(safe-area-inset-left));
@@ -628,7 +595,7 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
       transform-origin: left bottom;
     }
 
-    /* ✅ Smaller TV in landscape so it never overlaps title */
+    /* Smaller TV in landscape keeps the title visible. */
     @media (orientation: landscape) and (max-height: 700px){
       .tvDock{
         transform: scale(.68) !important;
@@ -643,7 +610,7 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
       }
     }
 
-    /* Mobile TV corner */
+    /* Mobile TV corner. */
     @media (max-width: 640px){
       .tvDock{
         left: auto;
@@ -761,9 +728,7 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
       opacity: .7;
     }
 
-    /* ===================== */
-    /* ✅ ZOOM MODE           */
-    /* ===================== */
+    /* TV zoom mode. */
     .tvDockZoom{
       left: 50%;
       right: auto;
@@ -793,7 +758,7 @@ export default function IntroGate({ onEnter }: { onEnter: () => void }) {
     }
   `}
 </style>
-  
+
     </motion.div>
   );
 }

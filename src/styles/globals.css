@@ -4,7 +4,7 @@
   --ink: #eae7df;
   --muted: rgba(234,231,223,.72);
 
-  /* old money palette */
+  /* Portfolio palette */
   --cream: #f3ead8;
   --champagne: #e7d3a2;
   --gold: #c9a86a;
@@ -12,21 +12,21 @@
   --midnight: #0a0f1f;
   --forest: #0c1b16;
 
-  /* stronger glass tokens */
+  /* Glass tokens */
   --glass-tint-1: rgba(10, 11, 16, 0.72);
   --glass-tint-2: rgba(10, 11, 16, 0.50);
   --glass-border: rgba(255,255,255,.14);
   --glass-border-warm: rgba(231,211,162,.16);
   --shadow: 0 20px 60px rgba(0,0,0,.45);
 
-  /* anime gradient accents */
+  /* Ambient accents */
   --g1: radial-gradient(800px 340px at 15% 20%, rgba(201,168,106,.28), transparent 60%),
         radial-gradient(700px 320px at 85% 25%, rgba(160,130,255,.22), transparent 60%),
         radial-gradient(700px 320px at 60% 90%, rgba(255,120,170,.16), transparent 60%);
   --g2: linear-gradient(135deg, rgba(201,168,106,.55), rgba(255,120,170,.25), rgba(130,200,255,.25));
   --g3: linear-gradient(135deg, rgba(201,168,106,.9), rgba(231,211,162,.55), rgba(255,255,255,.08));
 
-  /* dock tokens */
+  /* Dock tokens */
   --dock-idle-opacity: 0.22;
   --dock-idle-filter: grayscale(0.45) brightness(0.85);
   --dock-idle-bg: rgba(255,255,255,.02);
@@ -50,7 +50,6 @@ body{
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* keep app above background video layers */
 #root{
   position: relative;
   z-index: 1;
@@ -82,9 +81,6 @@ button:focus-visible{
 
 .grid{ display:grid; gap: 14px; }
 
-/* =========================
-   Badge
-   ========================= */
 .badge{
   display:inline-flex;
   align-items:center;
@@ -98,10 +94,7 @@ button:focus-visible{
   letter-spacing: .08em;
   text-transform: uppercase;
 }
-
-/* =========================
-   Card: glass that stays readable
-   ========================= */
+/* Readable glass cards. */
 .card{
   position: relative;
   isolation: isolate;
@@ -112,7 +105,7 @@ button:focus-visible{
   background: transparent;
 }
 
-/* tint layer (above video, below content) */
+/* Readable tint above media */
 .card::before{
   content:"";
   position:absolute;
@@ -125,7 +118,7 @@ button:focus-visible{
   pointer-events:none;
 }
 
-/* anime accent lighting layer */
+/* Subtle accent lighting */
 .card::after{
   content:"";
   position:absolute;
@@ -142,15 +135,12 @@ button:focus-visible{
   border-color: rgba(231,211,162,.22);
 }
 
-/* ✅ content above tint layers */
+/* Keep content above overlays. */
 .card > *{
   position: relative;
   z-index: 2;
 }
 
-/* =========================
-   Frame border
-   ========================= */
 .frame{ position: relative; }
 .frame::before{
   content:"";
@@ -166,9 +156,6 @@ button:focus-visible{
   z-index: 3; /* above tint, still below content */
 }
 
-/* =========================
-   Grain overlay
-   ========================= */
 .grain{
   position: absolute;
   inset:-20%;
@@ -178,10 +165,7 @@ button:focus-visible{
   transform: rotate(7deg);
   pointer-events:none;
 }
-
-/* =========================
-   Dock safe padding
-   ========================= */
+/* Dock safe padding */
 .dock-safe{
   padding-bottom: calc(140px + env(safe-area-inset-bottom));
 }
@@ -190,10 +174,7 @@ button:focus-visible{
     padding-bottom: calc(170px + env(safe-area-inset-bottom));
   }
 }
-
-/* =========================
-   Section Glass (big blocks)
-   ========================= */
+/* Section glass panels. */
 .sectionGlass{
   position: relative;
   isolation: isolate;
@@ -225,9 +206,6 @@ button:focus-visible{
   z-index: 2;
 }
 
-/* =========================
-   Buttons
-   ========================= */
 .btn{
   border: 1px solid rgba(231,211,162,.22);
   background: rgba(255,255,255,.06);
@@ -241,10 +219,7 @@ button:focus-visible{
   background: rgba(255,255,255,.03);
   opacity: .9;
 }
-
-/* =========================
-   Mini Dock button states
-   ========================= */
+/* Mini dock states. */
 .dock-btn{
   border-radius: 14px;
   padding: 10px 10px;
@@ -275,16 +250,13 @@ button:focus-visible{
   border: 1px solid var(--dock-active-border);
   box-shadow: 0 10px 26px rgba(0,0,0,0.35);
 }
-
-/* =========================
-   Card video background support
-   ========================= */
+/* Card media background support. */
 .card.hasVideoBG{
   position: relative;
   overflow: hidden;
 }
 
-/* video layer inside card */
+/* Media layer */
 .card.hasVideoBG .cardVideoBG{
   position: absolute;
   inset: 0;
@@ -292,19 +264,18 @@ button:focus-visible{
   overflow: hidden;
 }
 
-/* tint layers above video */
+/* Overlays above media */
 .card.hasVideoBG::before,
 .card.hasVideoBG::after{
   z-index: 1;
 }
 
-/* content above everything */
+/* Content layer */
 .card.hasVideoBG > *{
   position: relative;
   z-index: 2;
 }
 
-/* ---------- Tech Pills (logos + auto-generated initials) ---------- */
 .techPill{
   display: inline-flex;
   align-items: center;
@@ -375,13 +346,12 @@ button:focus-visible{
   opacity: .7;
 }
 
-/* Optional: tighter wrap layout for skills groups */
 .techWrap{
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
 }
-/* ✅ Landscape fix: push main text up so it doesn't sit behind TV */
+/* Landscape fix: push main text up so it doesn't sit behind TV */
 @media (max-height: 520px) and (orientation: landscape) {
   .introMain {
     min-height: 100vh;          /* keep full screen */
@@ -391,28 +361,21 @@ button:focus-visible{
   }
 }
 
-/* Optional: even tighter screens */
 @media (max-height: 420px) and (orientation: landscape) {
   .introMain {
     padding-top: 14px;
   }
 }
-/* =========================
-   Mobile + Overflow + Perf Patch
-   Paste at END of file
-   ========================= */
+/* Mobile stability and performance fixes. */
 
-/* 1) Safer global overflow (some transforms cause sideways scroll) */
 html, body {
   overflow-x: hidden;
 }
 
-/* clip is better than hidden if supported */
 @supports (overflow: clip) {
   html, body { overflow-x: clip; }
 }
 
-/* 2) Better default section spacing on small screens */
 .section {
   padding: 72px 0;
 }
@@ -423,7 +386,6 @@ html, body {
   .section { padding: 44px 0; }
 }
 
-/* 3) Container padding feels nicer on tiny screens */
 .container {
   width: min(1120px, 92vw);
   margin: 0 auto;
@@ -432,14 +394,12 @@ html, body {
   .container { width: min(1120px, 94vw); }
 }
 
-/* 4) Make grids safe by default */
 .grid {
   display: grid;
   gap: 14px;
   min-width: 0;
 }
 
-/* 5) Fix common overflow inside flex/grid children */
 .card,
 .frame,
 .sectionGlass {
@@ -450,7 +410,6 @@ html, body {
   min-width: 0;
 }
 
-/* 6) Make long links/domains never overflow (badges etc.) */
 .badge,
 .p,
 .h1,
@@ -459,7 +418,6 @@ html, body {
   word-break: break-word;
 }
 
-/* 7) Performance: reduce heavy blur on mobile (big win) */
 @media (max-width: 900px) {
   .card::before,
   .sectionGlass::before {
@@ -476,19 +434,16 @@ html, body {
   }
 }
 
-/* 8) Respect reduced motion users (also helps low-end phones) */
 @media (prefers-reduced-motion: reduce) {
   * {
     scroll-behavior: auto !important;
   }
 }
 
-/* 9) Improve tap targets */
 button, .btn, a.dock-btn {
   touch-action: manipulation;
 }
 
-/* 10) Tech pills: safe wrap + no overflow */
 .techWrap { min-width: 0; }
 .techPill {
   max-width: 100%;
@@ -496,45 +451,41 @@ button, .btn, a.dock-btn {
 }
 .techLabel { overflow-wrap: anywhere; }
 
-/* 11) Video bg helper class: make sure it always sits behind content */
 .card.hasVideoBG .cardVideoBG {
   pointer-events: none;
 }
 
-/* 12) Optional: make badges a bit smaller on mobile */
 @media (max-width: 520px) {
   .badge {
     padding: 7px 10px;
     font-size: 11px;
   }
 }
-/* =========================
-   MOBILE FIX: cards/boxes not visible
-   ========================= */
+/* Mobile card visibility fixes */
 
 @media (max-width: 900px) {
-  /* disable heavy backdrop-filter on mobile (causes invisible cards sometimes) */
+  /* Disable heavy blur on mobile for reliable paint. */
   .card::before,
   .sectionGlass::before {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
   }
 
-  /* ensure tint layers sit UNDER content reliably */
+  /* Keep overlays under content. */
   .card::before,
   .card::after,
   .frame::before {
     z-index: 0 !important;
   }
 
-  /* force content above overlays */
+  /* Keep content above overlays. */
   .card > *,
   .sectionGlass > * {
     position: relative;
     z-index: 2 !important;
   }
 
-  /* give cards a real background so they don't look "missing" */
+  /* Give cards a real mobile background. */
   .card {
     background: rgba(10, 11, 16, 0.55) !important;
   }

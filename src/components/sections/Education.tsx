@@ -6,7 +6,6 @@ export default function Education() {
   return (
     <SectionWrap id="education" title="Education">
       <div className="eduGrid" style={{ marginTop: 12 }}>
-        {/* Chandigarh University */}
         <div className="card frame hasVideoBG eduCard">
           <VideoCardBG src="/cu.mp4" dim={0.62} />
 
@@ -21,7 +20,6 @@ export default function Education() {
           </p>
         </div>
 
-        {/* Bishop Scott Girls School */}
         <div className="card frame hasVideoBG eduCard">
           <VideoCardBG src="/bishop.mp4" dim={0.58} />
 
@@ -55,7 +53,6 @@ export default function Education() {
           word-break: break-word;
         }
 
-        /* Tablet */
         @media (max-width: 900px){
           #education .eduGrid{
             grid-template-columns: 1fr;
@@ -65,7 +62,6 @@ export default function Education() {
           }
         }
 
-        /* Mobile */
         @media (max-width: 520px){
           #education .eduCard{
             padding: 14px;

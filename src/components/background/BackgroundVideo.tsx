@@ -14,11 +14,10 @@ export default function BackgroundVideo({ src }: { src: string }) {
     playLockRef.current = false;
     setReady(false);
 
-    // stable settings
     v.muted = true;
     v.playsInline = true;
     v.loop = true;
-    v.preload = "metadata"; // ✅ faster than "auto" for bg
+    v.preload = "metadata"; // faster than "auto" for bg
 
     const tryPlay = async () => {
       const el = videoRef.current;
@@ -51,7 +50,6 @@ export default function BackgroundVideo({ src }: { src: string }) {
     v.addEventListener("loadedmetadata", onLoadedMeta);
     v.addEventListener("loadeddata", onFirstFrame);
 
-    // ✅ backup: some browsers fire canplay earlier than loadeddata
     v.addEventListener("canplay", onFirstFrame);
 
     window.addEventListener("pointerdown", onGesture, { passive: true });
@@ -95,14 +93,13 @@ export default function BackgroundVideo({ src }: { src: string }) {
         }}
       />
 
-      {/* overlay for readability */}
       <div className="bgVideoOverlay" />
       <style>{`
         .bgVideoLayer{
           position: fixed;
           inset: 0;
-          z-index: 0;              /* ✅ NOT negative */
-          pointer-events: none;     /* ✅ never blocks UI */
+          z-index: 0;              /* NOT negative */
+          pointer-events: none;     /* never blocks UI */
           overflow: hidden;
           background: #000;
         }

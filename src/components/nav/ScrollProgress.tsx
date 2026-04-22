@@ -8,7 +8,6 @@ export default function ScrollProgress() {
   React.useEffect(() => {
     const clamp01 = (n: number) => Math.min(1, Math.max(0, n));
 
-    // Fallback: compute progress from window scroll
     const computeFromWindow = () => {
       const doc = document.documentElement;
       const scrollTop = window.scrollY || doc.scrollTop || 0;
@@ -16,7 +15,7 @@ export default function ScrollProgress() {
       setP(limit > 0 ? clamp01(scrollTop / limit) : 0);
     };
 
-    // If Lenis not ready, still show progress using native scroll
+    // Fall back to native scroll progress when Lenis is not ready.
     if (!lenis) {
       computeFromWindow();
       window.addEventListener("scroll", computeFromWindow, { passive: true });
@@ -27,9 +26,7 @@ export default function ScrollProgress() {
       };
     }
 
-    // Lenis scroll handler
     const handler = (e: any) => {
-      // Prefer Lenis progress if provided
       if (typeof e?.progress === "number") {
         setP(clamp01(e.progress));
         return;
@@ -40,10 +37,8 @@ export default function ScrollProgress() {
       setP(limit > 0 ? clamp01(scroll / limit) : 0);
     };
 
-    // init once
     setP(0);
 
-    // Lenis emits scroll events with { scroll, limit, velocity, direction, progress }
     lenis.on("scroll", handler);
 
     return () => {

@@ -85,12 +85,10 @@ export default function App() {
   return (
     <LenisProvider>
       <div className="appRoot">
-        {/* ✅ Background layer (always behind) */}
         <div className="bgLayer" aria-hidden>
           <BackgroundVideo src={bgSrc} />
         </div>
 
-        {/* ✅ Foreground app (always above) */}
         <div className={`appLayer ${showDock ? "dock-safe" : ""}`}>
           {showGate ? (
             <IntroGate onEnter={onEnter} />
@@ -116,29 +114,28 @@ export default function App() {
         </div>
       </div>
 
-      {/* ✅ App-level stacking CSS (critical) */}
       <style>{`
         .appRoot{
           position: relative;
           min-height: 100vh;
           overflow-x: hidden;
-          isolation: isolate; /* ✅ prevents z-index bugs with fixed video */
+          isolation: isolate; /* prevents z-index bugs with fixed video */
         }
 
         .bgLayer{
           position: fixed;
           inset: 0;
           z-index: 0;
-          pointer-events: none; /* ✅ video never blocks clicks */
+          pointer-events: none; /* video never blocks clicks */
         }
 
         .appLayer{
           position: relative;
-          z-index: 5; /* ✅ content always above background */
+          z-index: 5; /* content always above background */
           min-height: 100vh;
         }
 
-        /* ✅ reserve space for MiniSectionDock on home */
+        /* reserve space for MiniSectionDock on home */
         .dock-safe{
           padding-bottom: 110px;
         }

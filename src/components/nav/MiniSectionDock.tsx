@@ -7,11 +7,9 @@ export default function MiniSectionDock() {
   const ids = useMemo(() => sections.map((s) => s.key), [sections]);
   const [active, setActive] = useState<string>(sections[0]?.key ?? "overview");
 
-  // Keep latest intersection ratios for stability
   const ratiosRef = useRef<Record<string, number>>({});
 
   const getNavOffset = () => {
-    // If you have a navbar element, prefer its real height
     const nav = document.querySelector<HTMLElement>("header, nav, .navbar");
     const h = nav?.getBoundingClientRect().height;
     return Math.max(0, Math.min(200, h ?? 84));
@@ -35,7 +33,6 @@ export default function MiniSectionDock() {
   };
 
   useEffect(() => {
-    // Build elements fresh (in case sections appear after mount)
     const els = ids
       .map((id) => document.getElementById(id))
       .filter(Boolean) as HTMLElement[];
@@ -46,13 +43,11 @@ export default function MiniSectionDock() {
 
     const io = new IntersectionObserver(
       (entries) => {
-        // Update ratios store
         for (const e of entries) {
           const id = (e.target as HTMLElement).id;
           ratiosRef.current[id] = e.isIntersecting ? e.intersectionRatio : 0;
         }
 
-        // Pick the highest ratio among ALL sections
         let bestId: string | null = null;
         let bestRatio = 0;
 
@@ -76,7 +71,6 @@ export default function MiniSectionDock() {
     return () => io.disconnect();
   }, [ids]);
 
-  // Ensure active key always exists (in case sections list changes)
   useEffect(() => {
     if (!ids.includes(active)) {
       setActive(ids[0] ?? "overview");
@@ -99,7 +93,6 @@ export default function MiniSectionDock() {
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    // Optional: left/right to move between sections when dock is focused
     if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
     e.preventDefault();
 
@@ -137,7 +130,6 @@ export default function MiniSectionDock() {
           boxShadow: "0 22px 60px rgba(0,0,0,.55)"
         }}
       >
-        {/* responsive layout: grid on desktop, scroll row on small screens */}
         <div
           className="miniDockRow"
           style={{
@@ -197,7 +189,6 @@ export default function MiniSectionDock() {
 
       <style>
         {`
-          /* Hover without mutating inline styles */
           .miniDockBtn:hover{
             opacity: .55 !important;
             transform: translateY(-1px);
@@ -212,7 +203,7 @@ export default function MiniSectionDock() {
             outline-offset: 2px;
           }
 
-          /* Mobile: turn grid into a horizontal scroll row */
+          /* Mobile dock scroll row. */
           @media (max-width: 720px){
             .miniDockRow{
               display: flex !important;

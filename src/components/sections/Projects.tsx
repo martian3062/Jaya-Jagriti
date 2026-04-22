@@ -138,7 +138,7 @@ const ProjectCard = ({
         }
         #projects .project-card:hover{ transform: translateY(-2px); }
 
-        /* media wrapper: desktop = full bg, mobile = banner */
+        /* Project media becomes a banner on mobile. */
         #projects .projMedia{
           position:absolute;
           inset:0;
@@ -288,7 +288,6 @@ const ProjectCard = ({
           #projects .projectsGrid{ grid-template-columns: 1fr; }
         }
 
-        /* MOBILE banner */
         @media (max-width: 520px){
           #projects .project-card{ padding: 14px !important; }
 
@@ -363,4 +362,3 @@ export default function Projects() {
     </SectionWrap>
   );
 }
-    

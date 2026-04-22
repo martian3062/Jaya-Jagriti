@@ -5,9 +5,9 @@ type VideoCardBGProps = {
   dim?: number;
   className?: string;
   radius?: number;
-  poster?: string;          // ✅ optional poster for instant paint
-  lazy?: boolean;           // ✅ default true
-  rootMargin?: string;      // ✅ tune when it mounts
+  poster?: string;
+  lazy?: boolean;
+  rootMargin?: string;
 };
 
 export default function VideoCardBG({
@@ -28,7 +28,7 @@ export default function VideoCardBG({
   const [mounted, setMounted] = useState(!lazy);
   const [ready, setReady] = useState(false);
 
-  // ✅ mount video only when near viewport
+  // mount video only when near viewport
   useEffect(() => {
     if (!lazy) return;
 
@@ -52,7 +52,7 @@ export default function VideoCardBG({
     return () => io.disconnect();
   }, [lazy, rootMargin]);
 
-  // ✅ play/pause based on visibility (helps mobile)
+  // play/pause based on visibility (helps mobile)
   useEffect(() => {
     if (!mounted) return;
 
@@ -64,12 +64,10 @@ export default function VideoCardBG({
     playLockRef.current = false;
     setReady(false);
 
-    // autoplay-friendly settings
     v.muted = true;
     v.playsInline = true;
     v.loop = true;
 
-    // don’t force huge downloads on LAN/phone
     v.preload = "metadata";
 
     let alive = true;
@@ -97,7 +95,6 @@ export default function VideoCardBG({
       setReady(true);
     };
 
-    // pause when offscreen, resume when back
     const visIO = new IntersectionObserver(
       (entries) => {
         const e = entries[0];
@@ -106,7 +103,6 @@ export default function VideoCardBG({
         if (e.isIntersecting) {
           void tryPlay();
         } else {
-          // ✅ save CPU/battery
           try {
             videoRef.current.pause();
           } catch {}
@@ -117,10 +113,8 @@ export default function VideoCardBG({
 
     visIO.observe(wrap);
 
-    // first try
     void tryPlay();
 
-    // one-time global gesture unlock (per component instance, but removed on cleanup)
     const onGesture = () => void tryPlay();
     window.addEventListener("pointerdown", onGesture, { passive: true });
     window.addEventListener("touchstart", onGesture, { passive: true });
@@ -153,7 +147,6 @@ export default function VideoCardBG({
       }}
       aria-hidden="true"
     >
-      {/* Poster fallback (fast on mobile) */}
       {!mounted && (
         <div
           style={{
@@ -194,7 +187,6 @@ export default function VideoCardBG({
         />
       )}
 
-      {/* readability overlay */}
       <div
         style={{
           position: "absolute",

@@ -17,7 +17,6 @@ export default function Footer() {
     }
   };
 
-  // reset copied on route changes / re-renders
   useEffect(() => {
     if (!copied) return;
     const t = window.setTimeout(() => setCopied(false), 1400);
@@ -72,7 +71,7 @@ export default function Footer() {
           padding: 18px;
           border-radius: 18px;
 
-          /* solid-ish base so it’s always visible on mobile */
+          /* Solid base keeps the footer visible on mobile. */
           background:
             linear-gradient(180deg, rgba(231,211,162,.10), rgba(0,0,0,.18));
           border: 1px solid rgba(231,211,162,.18);
@@ -189,7 +188,6 @@ export default function Footer() {
           overflow-wrap:anywhere;
         }
 
-        /* hover only on devices that actually hover */
         @media (hover: hover) and (pointer: fine){
           .footerPill:hover{
             transform: translateY(-1px);
@@ -205,7 +203,7 @@ export default function Footer() {
         @media (max-width: 520px){
           .footerCard{ padding: 14px; }
           .footerPill{ padding: 10px 12px; }
-          .footerMini{ display:none; } /* clean on tiny screens */
+          .footerMini{ display:none; }
         }
 
         @media (prefers-reduced-motion: reduce){

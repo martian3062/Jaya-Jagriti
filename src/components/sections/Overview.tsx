@@ -11,7 +11,6 @@ export default function Overview() {
       </h1>
 
       <div className="ovGrid" style={{ marginTop: 22 }}>
-        {/* Highlights */}
         <div className="card frame ovCard">
           <div className="ovLabel">Highlights</div>
 
@@ -33,7 +32,6 @@ export default function Overview() {
           </div>
         </div>
 
-        {/* Contact */}
         <div className="card frame ovCard">
           <div className="ovLabel">Contact</div>
 

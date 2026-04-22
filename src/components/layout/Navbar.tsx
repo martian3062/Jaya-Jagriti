@@ -32,7 +32,6 @@ export default function Navbar() {
     });
   };
 
-  // Close menu when route changes (basic)
   useEffect(() => {
     const close = () => setOpen(false);
     window.addEventListener("popstate", close);
@@ -52,7 +51,6 @@ export default function Navbar() {
           Jaya Jagriti
         </button>
 
-        {/* Desktop nav */}
         <nav className="navLinks">
           <NavLink to="/projects" style={linkStyle}>
             Projects
@@ -73,7 +71,6 @@ export default function Navbar() {
           </a>
         </nav>
 
-        {/* Mobile menu button */}
         <button
           type="button"
           className="navBurger"
@@ -87,7 +84,6 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile dropdown */}
       <div className={`navMobile ${open ? "open" : ""}`}>
         <div className="container navMobileInner">
           <NavLink onClick={() => setOpen(false)} to="/projects" style={linkStyle}>
@@ -114,21 +110,21 @@ export default function Navbar() {
       <div className="navDivider" />
 
       <style>{`
-        /* ✅ Mobile-safe sticky header */
+        /* Mobile-safe sticky header. */
         .navWrap{
           position: sticky;
           top: 0;
           z-index: 100;
           isolation: isolate;
 
-          /* real background (prevents “blank content under header” bug on mobile) */
+          /* Real background keeps the header readable on mobile */
           background:
             radial-gradient(900px 340px at 15% 20%, rgba(201,168,106,.14), transparent 60%),
             rgba(7,8,12,.72);
           border-bottom: 1px solid rgba(255,255,255,0.10);
         }
 
-        /* blur only if supported (and not required to see header) */
+        /* Blur enhances the header when the browser supports it. */
         @supports ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
           .navWrap{
             -webkit-backdrop-filter: blur(12px);
@@ -164,7 +160,6 @@ export default function Navbar() {
           flex-wrap: wrap;
         }
 
-        /* burger hidden on desktop */
         .navBurger{
           display:none;
           width: 44px;
@@ -204,7 +199,7 @@ export default function Navbar() {
           background: rgba(255,255,255,0.08);
         }
 
-        /* ✅ Mobile behavior */
+        /* Mobile navigation behavior. */
         @media (max-width: 900px){
           .navLinks{ display:none; }
           .navBurger{ display:block; }
@@ -222,7 +217,6 @@ export default function Navbar() {
           }
         }
 
-        /* Reduced motion */
         @media (prefers-reduced-motion: reduce){
           .navMobile{ transition: none !important; }
         }

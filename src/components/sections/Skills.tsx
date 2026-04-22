@@ -9,7 +9,6 @@ const initials = (label: string) => {
   return (parts[0][0] + parts[1][0]).toUpperCase();
 };
 
-/** Keep coins data OUTSIDE component */
 const COINS = [
   { x: 12, y: 22, s: 1.05, d: 0.0 },
   { x: 72, y: 18, s: 0.9, d: 0.15 },

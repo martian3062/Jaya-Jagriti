@@ -10,10 +10,10 @@ type Props = {
 export default function SectionWrap({ id, children, className }: Props) {
   const ref = useRef<HTMLElement | null>(null);
 
-  // more forgiving on mobile
+  // More forgiving on mobile.
   const inView = useInView(ref, { amount: 0.12, once: true, margin: "0px 0px -10% 0px" });
 
-  // ✅ safety: if IntersectionObserver fails on some devices, still show after mount
+  // Failsafe: if IntersectionObserver misses, show content after mount.
   const [forceShow, setForceShow] = useState(false);
   useEffect(() => {
     const t = window.setTimeout(() => setForceShow(true), 400);
@@ -45,7 +45,7 @@ export default function SectionWrap({ id, children, className }: Props) {
           overflow-x: clip; /* prevents sideways scroll from transforms */
         }
 
-        /* Consistent max-width + padding so mobile layout never breaks */
+        /* Keep section width and padding predictable on mobile. */
         .section-inner{
           width: min(1120px, 100%);
           margin: 0 auto;

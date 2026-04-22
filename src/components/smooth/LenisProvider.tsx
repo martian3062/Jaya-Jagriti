@@ -25,14 +25,10 @@ export function LenisProvider({ children, options }: LenisProviderProps) {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    // Create once
     if (!lenisRef.current) {
       lenisRef.current = new Lenis({
         duration: 1.1,
         smoothWheel: true,
-        // ✅ smoothTouch removed (TS-safe)
-        // wheelMultiplier: 1,
-        // touchMultiplier: 1,
         ...options
       });
     }
@@ -52,7 +48,6 @@ export function LenisProvider({ children, options }: LenisProviderProps) {
       lenis.destroy();
       lenisRef.current = null;
     };
-    // re-init only if options object identity changes
   }, [options]);
 
   return (
