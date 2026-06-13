@@ -1,4 +1,4 @@
-# Jaya Jagriti Portfolio
+# Jaya Jagriti Portfolio https://jaya-jagriti-10.vercel.app/
 
 Personal portfolio for Jaya Jagriti, built with React + Vite. Vibe thoda old-money, thoda anime, thoda retro TV. Site ka main goal simple hai: projects, skills, education, aur contact ko ek clean interactive experience me dikhana.
 
